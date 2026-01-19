@@ -99,15 +99,15 @@ Backend:
 - [x] Referral tree + rewards + tiers config in DB + tests
 
 Mobile:
-- [ ] Экран Referrals:
+- [x] Экран Referrals:
   - скрыт для ZERO
   - ссылка/QR/код приглашения для платных
   - дерево до N уровней (пагинация)
   - rewards list
-- [ ] Возможность открыть чат с рефералом (по id)
+- [x] Возможность открыть чат с рефералом (по id)
 
 Tests:
-- [ ] widget: referrals hidden for ZERO
+- [x] widget: referrals hidden for ZERO
 
 ---
 
