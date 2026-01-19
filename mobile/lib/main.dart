@@ -33,6 +33,7 @@ class _HomeShellState extends State<HomeShell> {
   final List<Widget> _screens = const [
     ChatScreen(),
     MediaScreen(),
+    SectionsScreen(),
     PlansScreen(),
     WalletScreen(),
     ReferralsScreen(),
@@ -57,6 +58,10 @@ class _HomeShellState extends State<HomeShell> {
           NavigationDestination(
             icon: Icon(Icons.graphic_eq_outlined),
             label: 'Media',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.view_quilt_outlined),
+            label: 'Sections',
           ),
           NavigationDestination(
             icon: Icon(Icons.workspace_premium_outlined),
@@ -259,6 +264,64 @@ class MediaScreen extends StatelessWidget {
             onPressed: () {},
             icon: const Icon(Icons.add_circle_outline),
             label: const Text('Start media session'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SectionsScreen extends StatelessWidget {
+  const SectionsScreen({super.key});
+
+  static const categories = [
+    _SectionCategory('Hobby', 'Personal experiments and creative routines.'),
+    _SectionCategory('Study', 'Learning paths, notes, and revision flows.'),
+    _SectionCategory('Work', 'Professional workflows and deliverables.'),
+  ];
+
+  static const checklist = [
+    _SectionChecklistItem('Brief required', 'Complete the 10-point section brief.'),
+    _SectionChecklistItem('3 sections free', 'Across Hobby, Study, and Work combined.'),
+    _SectionChecklistItem('300 ₽ / 3 months', 'Per additional section above the free quota.'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • Sections')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Sections Builder',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Create custom Hobby, Study, and Work spaces from structured briefs.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Categories',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final category in categories)
+            _SectionCategoryCard(category: category),
+          const SizedBox(height: 24),
+          Text(
+            'Requirements',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final item in checklist) _SectionChecklistCard(item: item),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add_circle_outline),
+            label: const Text('Start new section'),
           ),
         ],
       ),
@@ -649,6 +712,63 @@ class _MediaCard extends StatelessWidget {
         title: Text(item.title),
         subtitle: Text(item.subtitle),
         trailing: const Icon(Icons.chevron_right),
+      ),
+    );
+  }
+}
+
+class _SectionCategory {
+  const _SectionCategory(this.title, this.subtitle);
+
+  final String title;
+  final String subtitle;
+}
+
+class _SectionChecklistItem {
+  const _SectionChecklistItem(this.title, this.subtitle);
+
+  final String title;
+  final String subtitle;
+}
+
+class _SectionCategoryCard extends StatelessWidget {
+  const _SectionCategoryCard({required this.category});
+
+  final _SectionCategory category;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          child: const Icon(Icons.dashboard_customize_outlined),
+        ),
+        title: Text(category.title),
+        subtitle: Text(category.subtitle),
+        trailing: const Icon(Icons.chevron_right),
+      ),
+    );
+  }
+}
+
+class _SectionChecklistCard extends StatelessWidget {
+  const _SectionChecklistCard({required this.item});
+
+  final _SectionChecklistItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: const Icon(Icons.rule_folder_outlined),
+        ),
+        title: Text(item.title),
+        subtitle: Text(item.subtitle),
       ),
     );
   }

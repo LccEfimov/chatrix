@@ -9,6 +9,7 @@ from app.api.v1.endpoints.media import router as media_router
 from app.api.v1.endpoints.payments import router as payments_router
 from app.api.v1.endpoints.plans import router as plans_router
 from app.api.v1.endpoints.referrals import router as referrals_router
+from app.api.v1.endpoints.sections import router as sections_router
 from app.api.v1.endpoints.wallet import router as wallet_router
 
 api_router = APIRouter()
@@ -22,3 +23,4 @@ api_router.include_router(fx_router, tags=["fx"])
 api_router.include_router(referrals_router, tags=["referrals"])
 api_router.include_router(chat_router, tags=["chat"])
 api_router.include_router(media_router, tags=["media"])
+api_router.include_router(sections_router, tags=["sections"])
