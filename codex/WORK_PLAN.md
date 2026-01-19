@@ -117,15 +117,15 @@ Backend:
 - [-] Реальные AI провайдеры (OpenAI и др.) — заменить позже
 
 Mobile:
-- [ ] Список чатов + создание чата
-- [ ] Экран чата:
+- [x] Список чатов + создание чата
+- [x] Экран чата:
   - streaming UI (если backend поддерживает), иначе polling
   - attachments entrypoint (будущие)
   - настройки чата (prompt, voice/video settings gated)
-- [ ] Красивые message bubbles + animations
+- [x] Красивые message bubbles + animations
 
 Tests:
-- [ ] golden: chat screen
+- [-] golden: chat screen (baseline pending)
 
 ---
 
