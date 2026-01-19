@@ -32,10 +32,10 @@
 - [x] AI-orchestrator
 
 ## Milestone 6 — Media
-- [ ] Voice live
-- [ ] Video avatar
-- [ ] Image tools
-- [ ] Video tools
+- [x] Voice live
+- [x] Video avatar
+- [x] Image tools
+- [x] Video tools
 
 ## Milestone 7 — Sections Builder (Hobby/Study/Work)
 - [ ] Создание разделов по брифу
