@@ -30,3 +30,10 @@ Template:
 - Options considered: (1) Full payment gateway integrations with background jobs, (2) Stub payment/top-up records with explicit API contracts and idempotent ledger entries.
 - Why: Keeps the milestone testable with clear API contracts while leaving room for provider-specific integrations and scheduled FX updates.
 - Consequences: A future milestone must wire scheduled FX updates and real provider callbacks to move top-ups from pending to succeeded.
+
+- Date: 2026-01-19
+- Decision: Modeled referrals with `users.referrer_id` adjacency and exposed referral codes as the user's UUID in the stubbed referral link.
+- Context: Milestone 4 requires a referral tree, rewards, and stored tier percentages, but does not define link encoding or referral graph schema.
+- Options considered: (1) Separate referral link table with generated codes, (2) adjacency list on users with UUID-based code.
+- Why: Keeps the tree traversal simple and allows deterministic referral links without extra tables.
+- Consequences: If marketing requires short/rotatable codes, a dedicated referral code table will be introduced and backfilled.

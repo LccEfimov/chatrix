@@ -25,6 +25,8 @@ from app.models import (  # noqa: F401, E402
     plan,
     plan_entitlement,
     plan_limit,
+    referral_reward,
+    referral_tier,
     user,
     wallet_ledger,
     wallet_topup,
