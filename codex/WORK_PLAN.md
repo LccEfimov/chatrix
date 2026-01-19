@@ -13,11 +13,11 @@
 ---
 
 ## Milestone 00 — Repository Excellence (обязательный фундамент)
-- [ ] `scripts/test_backend.sh` (pytest в Docker и/или локально)
-- [ ] `scripts/test_mobile.sh` (flutter analyze + flutter test в Docker)
-- [ ] `scripts/ci.sh` (backend tests + mobile tests; опционально build APK)
-- [ ] Добавить dev‑линтеры (backend: ruff/black) и команды `scripts/lint_backend.sh`, `scripts/fmt_backend.sh`
-- [ ] Обновить `README.md` (как гонять CI локально)
+- [x] `scripts/test_backend.sh` (pytest в Docker и/или локально)
+- [x] `scripts/test_mobile.sh` (flutter analyze + flutter test в Docker)
+- [x] `scripts/ci.sh` (backend tests + mobile tests; опционально build APK)
+- [x] Добавить dev‑линтеры (backend: ruff/black) и команды `scripts/lint_backend.sh`, `scripts/fmt_backend.sh`
+- [x] Обновить `README.md` (как гонять CI локально)
 
 Acceptance:
 - `./scripts/ci.sh` зелёный на чистой машине
@@ -216,4 +216,3 @@ Mobile:
 - [ ] Crash reporting (Sentry) — optional decision
 - [ ] Observability (structured logs, correlation ids)
 - [ ] Android release pipeline (versioning, keystore instructions)
-

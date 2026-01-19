@@ -19,3 +19,20 @@ This repo includes a minimal Flutter starter (`mobile/lib/main.dart`).
 Create a full Flutter project (recommended) and copy `lib/` + `assets/` from this repo, or let Codex run `flutter create` and migrate files.
 
 See `docs/CODEX_RUNBOOK.md`.
+
+## Local CI & checks
+Run the same scripts used by the CI gate in `codex/WORK_PLAN.md`:
+
+```bash
+./scripts/ci.sh
+```
+
+Individual helpers:
+
+```bash
+./scripts/test_backend.sh
+./scripts/lint_backend.sh
+./scripts/fmt_backend.sh
+./scripts/test_mobile.sh
+BUILD_APK=1 ./scripts/build_apk_docker.sh
+```
