@@ -8,7 +8,7 @@ This file is ADR-lite architecture overview. Codex must keep it updated as modul
 - Workers: background jobs for media and AI pipelines
 
 ## Service boundaries
-- Auth
+- Auth & Accounts
 - Billing
 - AI Orchestrator
 - Chat

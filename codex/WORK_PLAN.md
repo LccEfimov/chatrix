@@ -7,9 +7,9 @@
 - [x] Docs placeholders
 
 ## Milestone 1 — Auth & Accounts
-- [ ] OAuth провайдеры: Google / Apple / Yandex / Telegram / Discord / TikTok
-- [ ] Привязка нескольких провайдеров к одному user
-- [ ] JWT sessions + refresh
+- [x] OAuth провайдеры: Google / Apple / Yandex / Telegram / Discord / TikTok
+- [x] Привязка нескольких провайдеров к одному user
+- [x] JWT sessions + refresh
 
 ## Milestone 2 — Plans/Entitlements (12 тарифов)
 - [ ] Таблицы: plans, plan_limits, plan_entitlements
