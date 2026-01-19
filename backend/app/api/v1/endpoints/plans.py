@@ -9,6 +9,7 @@ from app.models.plan import Plan
 from app.models.user import User
 from app.schemas.plans import PlanEntitlementResponse, PlanLimitResponse, PlanResponse
 from app.schemas.plans import SubscriptionActivateRequest, SubscriptionResponse
+from app.services.referrals import apply_referral_rewards_for_activation
 
 router = APIRouter()
 
@@ -54,6 +55,7 @@ def activate_subscription(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Plan not found")
     user.plan_code = plan.code
     db.add(user)
+    apply_referral_rewards_for_activation(db, referred_user=user, paid_plan=plan)
     db.commit()
     db.refresh(user)
     return SubscriptionResponse(plan=_plan_response(plan))

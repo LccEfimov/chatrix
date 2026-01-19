@@ -33,6 +33,7 @@ class _HomeShellState extends State<HomeShell> {
   final List<Widget> _screens = const [
     PlansScreen(),
     WalletScreen(),
+    ReferralsScreen(),
   ];
 
   @override
@@ -54,6 +55,10 @@ class _HomeShellState extends State<HomeShell> {
           NavigationDestination(
             icon: Icon(Icons.account_balance_wallet_outlined),
             label: 'Wallet',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.group_outlined),
+            label: 'Referrals',
           ),
         ],
       ),
@@ -204,6 +209,135 @@ class WalletScreen extends StatelessWidget {
             label: const Text('Add funds'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ReferralsScreen extends StatelessWidget {
+  const ReferralsScreen({super.key});
+
+  static const tiers = [
+    _ReferralTier('Level 1', 'Core 3% • Start 5% • Prime 5.5%'),
+    _ReferralTier('Level 2', 'Core 2.7% • Start 4.5% • Prime 5.0%'),
+    _ReferralTier('Level 3', 'Core 2.4% • Start 4.0% • Prime 4.5%'),
+  ];
+
+  static const rewards = [
+    _ReferralReward('Invitee upgraded to Start', 'Level 1 • 1500 ₽'),
+    _ReferralReward('Invitee upgraded to Prime', 'Level 2 • 2000 ₽'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • Referrals')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Referral Program',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Earn rewards when your referrals activate paid plans and link two providers.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Your link',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  const SelectableText('https://chatrix.app/r/your-code'),
+                  const SizedBox(height: 12),
+                  FilledButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.copy),
+                    label: const Text('Copy link'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Tier highlights',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final tier in tiers) _ReferralTierCard(tier: tier),
+          const SizedBox(height: 24),
+          Text(
+            'Recent rewards',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final reward in rewards) _ReferralRewardCard(reward: reward),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReferralTier {
+  const _ReferralTier(this.title, this.detail);
+
+  final String title;
+  final String detail;
+}
+
+class _ReferralReward {
+  const _ReferralReward(this.title, this.detail);
+
+  final String title;
+  final String detail;
+}
+
+class _ReferralTierCard extends StatelessWidget {
+  const _ReferralTierCard({required this.tier});
+
+  final _ReferralTier tier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: const Icon(Icons.trending_up),
+        ),
+        title: Text(tier.title),
+        subtitle: Text(tier.detail),
+      ),
+    );
+  }
+}
+
+class _ReferralRewardCard extends StatelessWidget {
+  const _ReferralRewardCard({required this.reward});
+
+  final _ReferralReward reward;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+          child: const Icon(Icons.redeem),
+        ),
+        title: Text(reward.title),
+        subtitle: Text(reward.detail),
       ),
     );
   }
