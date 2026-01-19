@@ -5,6 +5,7 @@ from app.api.v1.endpoints.auth import router as auth_router
 from app.api.v1.endpoints.chat import router as chat_router
 from app.api.v1.endpoints.fx import router as fx_router
 from app.api.v1.endpoints.health import router as health_router
+from app.api.v1.endpoints.files import router as files_router
 from app.api.v1.endpoints.media import router as media_router
 from app.api.v1.endpoints.payments import router as payments_router
 from app.api.v1.endpoints.plans import router as plans_router
@@ -24,3 +25,4 @@ api_router.include_router(referrals_router, tags=["referrals"])
 api_router.include_router(chat_router, tags=["chat"])
 api_router.include_router(media_router, tags=["media"])
 api_router.include_router(sections_router, tags=["sections"])
+api_router.include_router(files_router, tags=["files"])

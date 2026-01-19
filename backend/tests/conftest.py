@@ -23,6 +23,7 @@ from app.models import (  # noqa: F401, E402
     auth_session,
     chat,
     chat_message,
+    file,
     fx_rate,
     oauth_account,
     plan,

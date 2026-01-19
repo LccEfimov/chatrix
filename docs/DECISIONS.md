@@ -51,3 +51,10 @@ Template:
 - Options considered: (1) Block creation without immediate payment, (2) Allow creation while recording the fee for later billing.
 - Why: Keeps API usable while preserving pricing metadata for later billing integration.
 - Consequences: Billing enforcement must be added to prevent unpaid premium sections in production.
+
+- Date: 2026-01-20
+- Decision: Implemented Docs uploads as a stubbed storage flow with `files` metadata, S3-style placeholder paths, and parser adapters returning placeholder text for txt/md/csv/docx/pdf. Storage quota enforcement uses the `storage_bytes` plan limit when configured; missing limits are treated as unlimited.
+- Context: Milestone 8 requires upload/download, whitelist enforcement, and parser adapters, but no object storage integration or parsing libraries are defined yet.
+- Options considered: (1) Integrate real S3 + document parsers now, (2) Stub storage paths and adapters while preserving schema/API contracts.
+- Why: Keeps API contracts and quota logic testable without external dependencies, while making the adapters explicit for later replacement.
+- Consequences: Real object storage and parser implementations must replace placeholders, and storage limits should be populated in plan limits before production.

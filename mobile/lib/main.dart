@@ -33,6 +33,7 @@ class _HomeShellState extends State<HomeShell> {
   final List<Widget> _screens = const [
     ChatScreen(),
     MediaScreen(),
+    DocsScreen(),
     SectionsScreen(),
     PlansScreen(),
     WalletScreen(),
@@ -58,6 +59,10 @@ class _HomeShellState extends State<HomeShell> {
           NavigationDestination(
             icon: Icon(Icons.graphic_eq_outlined),
             label: 'Media',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.folder_open_outlined),
+            label: 'Docs',
           ),
           NavigationDestination(
             icon: Icon(Icons.view_quilt_outlined),
@@ -266,6 +271,122 @@ class MediaScreen extends StatelessWidget {
             label: const Text('Start media session'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DocsScreen extends StatelessWidget {
+  const DocsScreen({super.key});
+
+  static const supportedFormats = [
+    'txt · md · csv',
+    'doc · docx · pdf',
+    'xls · xlsx · ods',
+    'epub · mobi · fb2',
+  ];
+
+  static const recentFiles = [
+    _DocFile('Project brief', 'brief.pdf', 'Pending upload'),
+    _DocFile('Research notes', 'notes.md', 'Parsed'),
+    _DocFile('Budget', 'finance.xlsx', 'Stored'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • Docs')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Docs & files',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Upload documents, parse content, and keep everything within your plan quota.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Storage usage',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 12),
+                  const LinearProgressIndicator(value: 0.32),
+                  const SizedBox(height: 8),
+                  Text(
+                    '320 MB of 1 GB used',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Supported formats',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              for (final format in supportedFormats)
+                Chip(
+                  label: Text(format),
+                  avatar: const Icon(Icons.description_outlined),
+                ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Recent uploads',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final file in recentFiles) _DocFileCard(file: file),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.upload_file_outlined),
+            label: const Text('Upload file'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DocFile {
+  const _DocFile(this.title, this.filename, this.status);
+
+  final String title;
+  final String filename;
+  final String status;
+}
+
+class _DocFileCard extends StatelessWidget {
+  const _DocFileCard({required this.file});
+
+  final _DocFile file;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.insert_drive_file_outlined),
+        title: Text(file.title),
+        subtitle: Text(file.filename),
+        trailing: Text(file.status),
       ),
     );
   }
