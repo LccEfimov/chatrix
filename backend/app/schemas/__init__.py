@@ -1,4 +1,9 @@
 from app.schemas.auth import AuthResponse, OAuthCallbackRequest, RefreshRequest
+from app.schemas.analytics import (
+    AnalyticsEventCreateRequest,
+    AnalyticsEventListResponse,
+    AnalyticsEventResponse,
+)
 from app.schemas.fx import FxRateResponse
 from app.schemas.media import (
     ImageJobCreateRequest,
@@ -30,9 +35,17 @@ from app.schemas.wallet import (
     WalletLedgerEntryResponse,
     WalletLedgerResponse,
 )
+from app.schemas.support import (
+    SupportTicketCreateRequest,
+    SupportTicketListResponse,
+    SupportTicketResponse,
+)
 
 __all__ = [
     "AuthResponse",
+    "AnalyticsEventCreateRequest",
+    "AnalyticsEventListResponse",
+    "AnalyticsEventResponse",
     "FxRateResponse",
     "ImageJobCreateRequest",
     "ImageJobListResponse",
@@ -42,6 +55,9 @@ __all__ = [
     "PlanLimitResponse",
     "PlanResponse",
     "RefreshRequest",
+    "SupportTicketCreateRequest",
+    "SupportTicketListResponse",
+    "SupportTicketResponse",
     "SubscriptionActivateRequest",
     "SubscriptionResponse",
     "TopupConfirmRequest",

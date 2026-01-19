@@ -53,4 +53,4 @@
 - [x] Пакеты S/M/L
 
 ## Milestone 10 — Полировка
-- [ ] UX polish, analytics, support
+- [x] UX polish, analytics, support
