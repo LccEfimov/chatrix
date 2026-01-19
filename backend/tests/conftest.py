@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -18,7 +18,7 @@ os.environ.setdefault("JWT_SECRET", "test-secret")
 from app.api.deps import get_db  # noqa: E402
 from app.db.base import Base  # noqa: E402
 from app.main import create_app  # noqa: E402
-from app.models import auth_session, oauth_account, user  # noqa: F401, E402
+from app.models import auth_session, oauth_account, plan, plan_entitlement, plan_limit, user  # noqa: F401, E402
 
 
 @pytest.fixture()
@@ -32,6 +32,26 @@ def db_session() -> Generator[Session, None, None]:
     Base.metadata.create_all(bind=engine)
     session = TestingSessionLocal()
     try:
+        session.execute(
+            text(
+                """
+                INSERT INTO plans (code, name, period_months, price_rub, is_active) VALUES
+                ('ZERO', 'Zero', NULL, 0, 1),
+                ('CORE', 'Core', 1, 150, 1),
+                ('START', 'Start', 3, 500, 1),
+                ('PRIME', 'Prime', 3, 800, 1),
+                ('ADVANCED', 'Advanced', 3, 1100, 1),
+                ('STUDIO', 'Studio', 3, 1400, 1),
+                ('BUSINESS', 'Business', 3, 2000, 1),
+                ('BLD_DIALOGUE', 'Builder • Dialogue', 3, 700, 1),
+                ('BLD_MEDIA', 'Builder • Media', 3, 700, 1),
+                ('BLD_DOCS', 'Builder • Docs', 3, 700, 1),
+                ('VIP', 'VIP • Signature', NULL, 15000, 1),
+                ('DEV', 'Developer • Gate', 12, 5000, 1)
+                """
+            )
+        )
+        session.commit()
         yield session
     finally:
         session.close()

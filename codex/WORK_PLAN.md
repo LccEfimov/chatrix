@@ -12,9 +12,9 @@
 - [x] JWT sessions + refresh
 
 ## Milestone 2 — Plans/Entitlements (12 тарифов)
-- [ ] Таблицы: plans, plan_limits, plan_entitlements
-- [ ] Инициализация тарифов: ZERO, CORE, START, PRIME, ADVANCED, STUDIO, BUSINESS, BLD_DIALOGUE, BLD_MEDIA, BLD_DOCS, VIP, DEV
-- [ ] Сервис policy engine: проверка прав/лимитов
+- [x] Таблицы: plans, plan_limits, plan_entitlements
+- [x] Инициализация тарифов: ZERO, CORE, START, PRIME, ADVANCED, STUDIO, BUSINESS, BLD_DIALOGUE, BLD_MEDIA, BLD_DOCS, VIP, DEV
+- [x] Сервис policy engine: проверка прав/лимитов
 
 ## Milestone 3 — Wallet/Payments + FX
 - [ ] Ledger (идемпотентность) и расчёт баланса

@@ -40,6 +40,7 @@ def _user_response(user: User, providers: list[OAuthAccount]) -> UserMeResponse:
     return UserMeResponse(
         id=str(user.id),
         email=user.email,
+        plan_code=user.plan_code,
         providers=[
             UserProvider(provider=account.provider, provider_user_id=account.provider_user_id)
             for account in providers

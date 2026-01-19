@@ -9,6 +9,7 @@ This file is ADR-lite architecture overview. Codex must keep it updated as modul
 
 ## Service boundaries
 - Auth & Accounts
+- Plans & Policy (entitlements/limits)
 - Billing
 - AI Orchestrator
 - Chat
