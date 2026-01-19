@@ -10,15 +10,17 @@ class TokenPair(BaseModel):
 class OAuthStartResponse(BaseModel):
     provider: str
     auth_url: str
+    state: str
 
 
 class OAuthCallbackRequest(BaseModel):
-    provider_user_id: str = Field(min_length=1, max_length=255)
-    email: EmailStr
+    code: str = Field(min_length=1, max_length=2048)
+    state: str = Field(min_length=1, max_length=255)
 
 
 class LinkProviderRequest(BaseModel):
-    provider_user_id: str = Field(min_length=1, max_length=255)
+    code: str = Field(min_length=1, max_length=2048)
+    state: str = Field(min_length=1, max_length=255)
 
 
 class RefreshRequest(BaseModel):

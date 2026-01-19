@@ -11,6 +11,7 @@ from app.models.file import StoredFile
 from app.models.fx_rate import FxRate
 from app.models.image_job import ImageJob
 from app.models.oauth_account import OAuthAccount
+from app.models.oauth_state import OAuthState
 from app.models.plan import Plan
 from app.models.plan_entitlement import PlanEntitlement
 from app.models.plan_limit import PlanLimit
@@ -39,6 +40,7 @@ __all__ = [
     "InfraRate",
     "ImageJob",
     "OAuthAccount",
+    "OAuthState",
     "Plan",
     "PlanEntitlement",
     "PlanLimit",

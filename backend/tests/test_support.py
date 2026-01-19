@@ -3,17 +3,14 @@ def _auth_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-def _login(client, *, provider: str, provider_user_id: str, email: str) -> str:
-    response = client.post(
-        f"/v1/auth/oauth/{provider}/callback",
-        json={"provider_user_id": provider_user_id, "email": email},
-    )
+def _login(oauth_login, *, provider: str, provider_user_id: str, email: str) -> str:
+    response = oauth_login(provider=provider, email=email, provider_user_id=provider_user_id)
     return response.json()["tokens"]["access_token"]
 
 
-def test_support_ticket_flow(client) -> None:
+def test_support_ticket_flow(client, oauth_login) -> None:
     token = _login(
-        client,
+        oauth_login,
         provider="google",
         provider_user_id="support-user",
         email="support@example.com",

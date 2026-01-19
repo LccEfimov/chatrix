@@ -8,15 +8,12 @@ def _auth_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-def _create_token(client) -> str:
-    response = client.post(
-        "/v1/auth/oauth/google/callback",
-        json={"provider_user_id": "wallet-1", "email": "wallet@example.com"},
-    )
+def _create_token(oauth_login) -> str:
+    response = oauth_login(provider="google", email="wallet@example.com", provider_user_id="wallet-1")
     return response.json()["tokens"]["access_token"]
 
 
-def test_wallet_topup_flow(client, db_session) -> None:
+def test_wallet_topup_flow(client, db_session, oauth_login) -> None:
     db_session.add(
         FxRate(
             rate_date=date.today(),
@@ -28,7 +25,7 @@ def test_wallet_topup_flow(client, db_session) -> None:
     )
     db_session.commit()
 
-    token = _create_token(client)
+    token = _create_token(oauth_login)
 
     init_response = client.post(
         "/v1/wallet/topup/init",

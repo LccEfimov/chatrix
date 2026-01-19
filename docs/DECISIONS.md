@@ -93,3 +93,10 @@ Template:
 - Options considered: (1) VIP only, (2) VIP + DEV, (3) VIP + DEV + BUSINESS.
 - Why: BUSINESS is the highest standard subscription tier and typically aligns with unlimited feature access alongside VIP and DEV.
 - Consequences: Plan mapping may need adjustment once product defines explicit plan tiers for unlimited video demos.
+
+- Date: 2026-01-24
+- Decision: Implemented real OAuth code flows with PKCE, storing short-lived OAuth states in the database and exchanging authorization codes for provider profiles via configurable endpoints.
+- Context: Milestone 12 requires replacing stub OAuth callbacks with real provider integrations while keeping backend the source of truth for user identity and linkage.
+- Options considered: (1) Keep stub payloads for tests, (2) Implement full OAuth code exchange and state verification with PKCE support.
+- Why: State+PKCE enable secure mobile OAuth flows without exposing client secrets to the app, and the config-based endpoints keep providers swappable.
+- Consequences: OAuth providers must be configured via env variables before login works; tests must mock provider exchanges.
