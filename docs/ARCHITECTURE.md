@@ -19,3 +19,4 @@ This file is ADR-lite architecture overview. Codex must keep it updated as modul
 - Referrals
 - Sections Builder (Hobby/Study/Work)
 - Developer DevBox
+- Analytics & Support

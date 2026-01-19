@@ -39,6 +39,7 @@ class _HomeShellState extends State<HomeShell> {
     PlansScreen(),
     WalletScreen(),
     ReferralsScreen(),
+    SupportScreen(),
   ];
 
   @override
@@ -84,6 +85,10 @@ class _HomeShellState extends State<HomeShell> {
           NavigationDestination(
             icon: Icon(Icons.group_outlined),
             label: 'Referrals',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.support_agent_outlined),
+            label: 'Support',
           ),
         ],
       ),
@@ -675,6 +680,63 @@ class ReferralsScreen extends StatelessWidget {
   }
 }
 
+class SupportScreen extends StatelessWidget {
+  const SupportScreen({super.key});
+
+  static const insights = [
+    _SupportInsight('Daily active minutes', '48 min • last 7 days'),
+    _SupportInsight('Top tool', 'Text chat (62% of usage)'),
+    _SupportInsight('Storage usage', '320 MB of 1 GB'),
+  ];
+
+  static const supportTopics = [
+    _SupportTopic('Billing', 'Payments, refunds, and receipts'),
+    _SupportTopic('Account', 'Login, providers, and security'),
+    _SupportTopic('AI Tools', 'Chat, media, and files'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • Support')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Analytics & support',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Track usage trends, then open a ticket if you need help.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Usage insights',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final insight in insights) _SupportInsightCard(insight: insight),
+          const SizedBox(height: 24),
+          Text(
+            'Support topics',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final topic in supportTopics) _SupportTopicCard(topic: topic),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.chat_bubble_outline),
+            label: const Text('Open support ticket'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _DevboxPackage {
   const _DevboxPackage(this.name, this.specs, this.price);
 
@@ -794,6 +856,63 @@ class _WalletInfo {
 
   final String title;
   final String subtitle;
+}
+
+class _SupportInsight {
+  const _SupportInsight(this.title, this.detail);
+
+  final String title;
+  final String detail;
+}
+
+class _SupportTopic {
+  const _SupportTopic(this.title, this.detail);
+
+  final String title;
+  final String detail;
+}
+
+class _SupportInsightCard extends StatelessWidget {
+  const _SupportInsightCard({required this.insight});
+
+  final _SupportInsight insight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          child: const Icon(Icons.analytics_outlined),
+        ),
+        title: Text(insight.title),
+        subtitle: Text(insight.detail),
+      ),
+    );
+  }
+}
+
+class _SupportTopicCard extends StatelessWidget {
+  const _SupportTopicCard({required this.topic});
+
+  final _SupportTopic topic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: const Icon(Icons.support_agent_outlined),
+        ),
+        title: Text(topic.title),
+        subtitle: Text(topic.detail),
+        trailing: const Icon(Icons.chevron_right),
+      ),
+    );
+  }
 }
 
 class _InfoCard extends StatelessWidget {

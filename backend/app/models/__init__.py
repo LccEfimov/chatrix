@@ -1,4 +1,5 @@
 from app.models.ai_provider import AiProvider
+from app.models.analytics_event import AnalyticsEvent
 from app.models.auth_session import AuthSession
 from app.models.chat import Chat
 from app.models.chat_message import ChatMessage
@@ -16,6 +17,7 @@ from app.models.plan_limit import PlanLimit
 from app.models.referral_reward import ReferralReward
 from app.models.referral_tier import ReferralTier
 from app.models.section import Section
+from app.models.support_ticket import SupportTicket
 from app.models.user import User
 from app.models.video_avatar import VideoAvatar
 from app.models.video_job import VideoJob
@@ -25,6 +27,7 @@ from app.models.wallet_topup import WalletTopup
 
 __all__ = [
     "AiProvider",
+    "AnalyticsEvent",
     "AuthSession",
     "Chat",
     "ChatMessage",
@@ -42,6 +45,7 @@ __all__ = [
     "ReferralReward",
     "ReferralTier",
     "Section",
+    "SupportTicket",
     "User",
     "VideoAvatar",
     "VideoJob",

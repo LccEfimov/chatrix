@@ -20,6 +20,7 @@ from app.db.base import Base  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.models import (  # noqa: F401, E402
     ai_provider,
+    analytics_event,
     auth_session,
     chat,
     chat_message,
@@ -36,6 +37,7 @@ from app.models import (  # noqa: F401, E402
     referral_reward,
     referral_tier,
     section,
+    support_ticket,
     user,
     wallet_ledger,
     wallet_topup,
