@@ -37,6 +37,7 @@ class UserProvider(BaseModel):
 class UserMeResponse(BaseModel):
     id: str
     email: EmailStr
+    plan_code: str
     providers: list[UserProvider]
 
 
