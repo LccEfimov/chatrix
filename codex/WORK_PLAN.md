@@ -69,13 +69,13 @@ Backend:
 - [x] Plans/limits/entitlements + policy engine tests
 
 Mobile:
-- [ ] Экран “Тарифы/Paywall” (12 тарифов, красиво)
-- [ ] Экран “Мой тариф и лимиты”
-- [ ] UI‑гейтинг функций по entitlements (сервер — источник истины)
+- [x] Экран “Тарифы/Paywall” (12 тарифов, красиво)
+- [x] Экран “Мой тариф и лимиты”
+- [x] UI‑гейтинг функций по entitlements (сервер — источник истины)
 
 Tests:
 - [ ] golden: paywall
-- [ ] unit: entitlement gating mapper
+- [x] unit: entitlement gating mapper
 
 ---
 

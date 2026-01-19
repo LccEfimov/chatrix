@@ -4,6 +4,8 @@ import '../../theme/app_spacing.dart';
 import '../../ui/components/app_button.dart';
 import '../../ui/components/app_card.dart';
 import '../../ui/components/app_scaffold.dart';
+import '../../ui/components/entitlement_gate.dart';
+import '../plans/plan_entitlements.dart';
 
 class DevboxScreen extends StatelessWidget {
   const DevboxScreen({super.key});
@@ -50,10 +52,15 @@ class DevboxScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           for (final stack in stacks) DevboxStackCard(stack: stack),
           const SizedBox(height: AppSpacing.lg),
-          AppPrimaryButton(
-            label: 'Start DevBox',
-            icon: Icons.rocket_launch_outlined,
-            onPressed: () {},
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.devbox,
+            lockedTitle: 'DevBox locked',
+            lockedSubtitle: 'Upgrade to Developer • Gate to start DevBox.',
+            child: AppPrimaryButton(
+              label: 'Start DevBox',
+              icon: Icons.rocket_launch_outlined,
+              onPressed: () {},
+            ),
           ),
         ],
       ),

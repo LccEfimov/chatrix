@@ -4,6 +4,8 @@ import '../../theme/app_spacing.dart';
 import '../../ui/components/app_button.dart';
 import '../../ui/components/app_card.dart';
 import '../../ui/components/app_scaffold.dart';
+import '../../ui/components/entitlement_gate.dart';
+import '../plans/plan_entitlements.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -46,10 +48,15 @@ class ChatScreen extends StatelessWidget {
           for (final suggestion in suggestions)
             ChatSuggestionCard(suggestion: suggestion),
           const SizedBox(height: AppSpacing.lg),
-          AppPrimaryButton(
-            label: 'New chat',
-            icon: Icons.add_comment_outlined,
-            onPressed: () {},
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.chat,
+            lockedTitle: 'Chat access locked',
+            lockedSubtitle: 'Upgrade your plan to start new chats.',
+            child: AppPrimaryButton(
+              label: 'New chat',
+              icon: Icons.add_comment_outlined,
+              onPressed: () {},
+            ),
           ),
         ],
       ),

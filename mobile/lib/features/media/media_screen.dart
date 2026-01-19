@@ -4,6 +4,8 @@ import '../../theme/app_spacing.dart';
 import '../../ui/components/app_button.dart';
 import '../../ui/components/app_card.dart';
 import '../../ui/components/app_scaffold.dart';
+import '../../ui/components/entitlement_gate.dart';
+import '../plans/plan_entitlements.dart';
 
 class MediaScreen extends StatelessWidget {
   const MediaScreen({super.key});
@@ -46,24 +48,65 @@ class MediaScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           _SectionHeader(title: 'Voice live'),
           const SizedBox(height: AppSpacing.md),
-          for (final item in voiceModes) MediaCard(item: item),
+          for (final item in voiceModes)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: EntitlementGate(
+                entitlementKey: PlanEntitlementKeys.voice,
+                lockedTitle: 'Voice access locked',
+                lockedSubtitle: 'Upgrade your plan to unlock voice sessions.',
+                child: MediaCard(item: item),
+              ),
+            ),
           const SizedBox(height: AppSpacing.lg),
           _SectionHeader(title: 'Video avatars'),
           const SizedBox(height: AppSpacing.md),
-          for (final item in videoAvatars) MediaCard(item: item),
+          for (final item in videoAvatars)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: EntitlementGate(
+                entitlementKey: PlanEntitlementKeys.video,
+                lockedTitle: 'Video access locked',
+                lockedSubtitle: 'Upgrade your plan to unlock video avatars.',
+                child: MediaCard(item: item),
+              ),
+            ),
           const SizedBox(height: AppSpacing.lg),
           _SectionHeader(title: 'Image tools'),
           const SizedBox(height: AppSpacing.md),
-          for (final item in imageTools) MediaCard(item: item),
+          for (final item in imageTools)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: EntitlementGate(
+                entitlementKey: PlanEntitlementKeys.toolsImage,
+                lockedTitle: 'Image tools locked',
+                lockedSubtitle: 'Upgrade your plan to unlock image tools.',
+                child: MediaCard(item: item),
+              ),
+            ),
           const SizedBox(height: AppSpacing.lg),
           _SectionHeader(title: 'Video tools'),
           const SizedBox(height: AppSpacing.md),
-          for (final item in videoTools) MediaCard(item: item),
+          for (final item in videoTools)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: EntitlementGate(
+                entitlementKey: PlanEntitlementKeys.toolsVideo,
+                lockedTitle: 'Video tools locked',
+                lockedSubtitle: 'Upgrade your plan to unlock video tools.',
+                child: MediaCard(item: item),
+              ),
+            ),
           const SizedBox(height: AppSpacing.lg),
-          AppPrimaryButton(
-            label: 'Start media session',
-            icon: Icons.add_circle_outline,
-            onPressed: () {},
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.video,
+            lockedTitle: 'Media sessions locked',
+            lockedSubtitle: 'Upgrade your plan to start media sessions.',
+            child: AppPrimaryButton(
+              label: 'Start media session',
+              icon: Icons.add_circle_outline,
+              onPressed: () {},
+            ),
           ),
         ],
       ),
@@ -100,19 +143,16 @@ class MediaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: AppCard(
-        child: ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            child: Icon(item.icon),
-          ),
-          title: Text(item.title),
-          subtitle: Text(item.subtitle),
-          trailing: const Icon(Icons.chevron_right),
+    return AppCard(
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: Icon(item.icon),
         ),
+        title: Text(item.title),
+        subtitle: Text(item.subtitle),
+        trailing: const Icon(Icons.chevron_right),
       ),
     );
   }
