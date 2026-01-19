@@ -48,9 +48,9 @@
 - [x] Парсеры адаптерами (минимально: txt/md/csv/docx/pdf)
 
 ## Milestone 9 — Developer DevBox
-- [ ] DEV add-on: Dev-Container
-- [ ] infra_rates + формула стоимости
-- [ ] Пакеты S/M/L
+- [x] DEV add-on: Dev-Container
+- [x] infra_rates + формула стоимости
+- [x] Пакеты S/M/L
 
 ## Milestone 10 — Полировка
 - [ ] UX polish, analytics, support

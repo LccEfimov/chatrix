@@ -2,6 +2,10 @@ from app.models.ai_provider import AiProvider
 from app.models.auth_session import AuthSession
 from app.models.chat import Chat
 from app.models.chat_message import ChatMessage
+from app.models.devbox_package import DevboxPackage
+from app.models.devbox_rate import InfraRate
+from app.models.devbox_session import DevboxSession
+from app.models.devbox_stack import DevboxStack
 from app.models.file import StoredFile
 from app.models.fx_rate import FxRate
 from app.models.image_job import ImageJob
@@ -24,8 +28,12 @@ __all__ = [
     "AuthSession",
     "Chat",
     "ChatMessage",
+    "DevboxPackage",
+    "DevboxSession",
+    "DevboxStack",
     "StoredFile",
     "FxRate",
+    "InfraRate",
     "ImageJob",
     "OAuthAccount",
     "Plan",

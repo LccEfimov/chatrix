@@ -58,3 +58,10 @@ Template:
 - Options considered: (1) Integrate real S3 + document parsers now, (2) Stub storage paths and adapters while preserving schema/API contracts.
 - Why: Keeps API contracts and quota logic testable without external dependencies, while making the adapters explicit for later replacement.
 - Consequences: Real object storage and parser implementations must replace placeholders, and storage limits should be populated in plan limits before production.
+
+- Date: 2026-01-20
+- Decision: Seeded DevBox infra rates, packages (S/M/L), and stack options (Python/Node.js/Go) in the database; DevBox pricing uses a 30-day package duration (720 hours) with disk costs prorated by duration_days/30 and zero default egress. Margin percent applies to the subtotal after platform fee and resource costs.
+- Context: Milestone 9 requires infra_rates, package bundles, and a pricing formula, but the TZ does not specify default rate values, hours assumptions, or stack presets.
+- Options considered: (1) Hardcode defaults in service code, (2) seed configurable defaults in DB and compute pricing dynamically.
+- Why: Keeps pricing and stack selection configurable while still allowing immediate API usage and testing.
+- Consequences: Real rates and stack catalogs must be updated in production to match infrastructure costs.

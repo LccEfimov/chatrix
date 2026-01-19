@@ -35,6 +35,7 @@ class _HomeShellState extends State<HomeShell> {
     MediaScreen(),
     DocsScreen(),
     SectionsScreen(),
+    DevboxScreen(),
     PlansScreen(),
     WalletScreen(),
     ReferralsScreen(),
@@ -67,6 +68,10 @@ class _HomeShellState extends State<HomeShell> {
           NavigationDestination(
             icon: Icon(Icons.view_quilt_outlined),
             label: 'Sections',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.developer_mode_outlined),
+            label: 'DevBox',
           ),
           NavigationDestination(
             icon: Icon(Icons.workspace_premium_outlined),
@@ -450,6 +455,63 @@ class SectionsScreen extends StatelessWidget {
   }
 }
 
+class DevboxScreen extends StatelessWidget {
+  const DevboxScreen({super.key});
+
+  static const packages = [
+    _DevboxPackage('DevBox S', '1 vCPU • 2 GB RAM • 10 GB disk', '900 ₽ / 30 days'),
+    _DevboxPackage('DevBox M', '2 vCPU • 4 GB RAM • 30 GB disk', '1900 ₽ / 30 days'),
+    _DevboxPackage('DevBox L', '4 vCPU • 8 GB RAM • 80 GB disk', '3900 ₽ / 30 days'),
+  ];
+
+  static const stacks = [
+    _DevboxStack('Python', 'FastAPI, data tooling'),
+    _DevboxStack('Node.js', 'Next.js, React, tooling'),
+    _DevboxStack('Go', 'API + CLI workflows'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • DevBox')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Developer DevBox',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Spin up a paid dev container with curated stacks and resource packages.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Packages',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final package in packages) _DevboxPackageCard(package: package),
+          const SizedBox(height: 24),
+          Text(
+            'Stacks',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final stack in stacks) _DevboxStackCard(stack: stack),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.rocket_launch_outlined),
+            label: const Text('Start DevBox'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});
 
@@ -608,6 +670,64 @@ class ReferralsScreen extends StatelessWidget {
           const SizedBox(height: 12),
           for (final reward in rewards) _ReferralRewardCard(reward: reward),
         ],
+      ),
+    );
+  }
+}
+
+class _DevboxPackage {
+  const _DevboxPackage(this.name, this.specs, this.price);
+
+  final String name;
+  final String specs;
+  final String price;
+}
+
+class _DevboxStack {
+  const _DevboxStack(this.name, this.detail);
+
+  final String name;
+  final String detail;
+}
+
+class _DevboxPackageCard extends StatelessWidget {
+  const _DevboxPackageCard({required this.package});
+
+  final _DevboxPackage package;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          child: const Icon(Icons.storage_outlined),
+        ),
+        title: Text(package.name),
+        subtitle: Text(package.specs),
+        trailing: Text(package.price),
+      ),
+    );
+  }
+}
+
+class _DevboxStackCard extends StatelessWidget {
+  const _DevboxStackCard({required this.stack});
+
+  final _DevboxStack stack;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: const Icon(Icons.layers_outlined),
+        ),
+        title: Text(stack.name),
+        subtitle: Text(stack.detail),
       ),
     );
   }
