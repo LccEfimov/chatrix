@@ -50,17 +50,17 @@ Backend статус:
 - [-] OAuth provider adapters (сейчас упрощённые callbacks; заменить на real позже)
 
 Mobile:
-- [ ] Экран Onboarding/Login (Material 3, красиво, анимация)
-- [ ] Social buttons (Google/Apple/Yandex/TG/Discord/TikTok) — пока STUB UI + wiring на backend контракт
-- [ ] Secure token storage + refresh flow
-- [ ] Экран “Профиль/Привязки” (link/unlink providers)
-- [ ] Логика ZERO:
+- [x] Экран Onboarding/Login (Material 3, красиво, анимация)
+- [x] Social buttons (Google/Apple/Yandex/TG/Discord/TikTok) — пока STUB UI + wiring на backend контракт
+- [x] Secure token storage + refresh flow
+- [x] Экран “Профиль/Привязки” (link/unlink providers)
+- [x] Логика ZERO:
   - после регистрации тариф ZERO
   - скрыть referral entrypoint
 
 Tests:
-- [ ] widget tests: login UI states
-- [ ] integration test (smoke): login -> /me
+- [x] widget tests: login UI states
+- [x] integration test (smoke): login -> /me
 
 ---
 
