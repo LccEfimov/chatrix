@@ -10,6 +10,8 @@ import '../features/chat/chat_screen.dart';
 import '../features/devbox/devbox_screen.dart';
 import '../features/docs/docs_screen.dart';
 import '../features/media/media_screen.dart';
+import '../features/media/video_screen.dart';
+import '../features/media/video_tools_screen.dart';
 import '../features/plans/plans_screen.dart';
 import '../features/referrals/referrals_screen.dart';
 import '../features/sections/sections_screen.dart';
@@ -102,6 +104,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'audio-tools',
                     builder: (context, state) => const AudioToolsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'video',
+                    builder: (context, state) => const VideoScreen(),
+                  ),
+                  GoRoute(
+                    path: 'video-tools',
+                    builder: (context, state) => const VideoToolsScreen(),
                   ),
                 ],
               ),
