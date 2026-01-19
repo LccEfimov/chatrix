@@ -180,7 +180,7 @@ Backend:
 - [x] sections CRUD + pricing (3 free then paid) + tests
 
 Mobile:
-- [ ] Экран Hobby/Study/Work:
+- [x] Экран Hobby/Study/Work:
   - библиотека готовых UI‑элементов
   - создание раздела через бриф (form)
   - paywall на 4+ раздел
