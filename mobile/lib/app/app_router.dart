@@ -9,6 +9,7 @@ import '../features/chat/chat_detail_screen.dart';
 import '../features/chat/chat_screen.dart';
 import '../features/devbox/devbox_screen.dart';
 import '../features/docs/docs_screen.dart';
+import '../features/docs/files_screen.dart';
 import '../features/media/media_screen.dart';
 import '../features/media/video_screen.dart';
 import '../features/media/video_tools_screen.dart';
@@ -121,7 +122,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: _docsPath,
-                builder: (context, state) => const DocsScreen(),
+                builder: (context, state) => const FilesScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'insights',
+                    builder: (context, state) => const DocsScreen(),
+                  ),
+                ],
               ),
             ],
           ),
