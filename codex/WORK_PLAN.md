@@ -28,8 +28,8 @@
 - [x] Хранить проценты по уровням в БД (конфиг)
 
 ## Milestone 5 — Chat (text)
-- [ ] Чаты/сообщения
-- [ ] AI-orchestrator
+- [x] Чаты/сообщения
+- [x] AI-orchestrator
 
 ## Milestone 6 — Media
 - [ ] Voice live
