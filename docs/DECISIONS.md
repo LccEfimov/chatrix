@@ -65,3 +65,10 @@ Template:
 - Options considered: (1) Hardcode defaults in service code, (2) seed configurable defaults in DB and compute pricing dynamically.
 - Why: Keeps pricing and stack selection configurable while still allowing immediate API usage and testing.
 - Consequences: Real rates and stack catalogs must be updated in production to match infrastructure costs.
+
+- Date: 2026-01-21
+- Decision: Deferred adding Flutter golden tests because binary artifacts are not supported in this workflow.
+- Context: Milestone 01 requests a golden test, but the environment/user instructions prohibit committing binary files.
+- Options considered: (1) Commit binary golden images, (2) skip golden tests and document the gap.
+- Why: The repository cannot accept binary test assets, so golden tests would be impossible to store or review.
+- Consequences: Golden tests must be added later in an environment that supports binary artifacts.
