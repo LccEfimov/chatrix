@@ -166,10 +166,10 @@ Backend:
 - [-] Реальный S3/MinIO upload (init/complete) — заменить позже
 
 Mobile:
-- [ ] Экран Files:
+- [x] Экран Files:
   - загрузка (пока простой multipart) + список
   - квоты, занято/лимит
-- [ ] Экран Docs:
+- [x] Экран Docs:
   - выбор файла
   - preview (где возможно) и “AI summary/QA” (через backend)
 
