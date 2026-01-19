@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../theme/app_spacing.dart';
 import '../../ui/components/app_button.dart';
@@ -44,6 +45,44 @@ class MediaScreen extends StatelessWidget {
           Text(
             'Launch live voice, manage avatar sessions, and queue media jobs.',
             style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          _SectionHeader(title: 'Quick actions'),
+          const SizedBox(height: AppSpacing.md),
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.voice,
+            lockedTitle: 'Voice access locked',
+            lockedSubtitle: 'Upgrade your plan to unlock voice sessions.',
+            child: AppCard(
+              onTap: () => context.push('/media/voice'),
+              child: const ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: CircleAvatar(
+                  child: Icon(Icons.mic_outlined),
+                ),
+                title: Text('Voice sessions'),
+                subtitle: Text('Start or resume a live voice session.'),
+                trailing: Icon(Icons.chevron_right),
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.toolsAudio,
+            lockedTitle: 'Audio tools locked',
+            lockedSubtitle: 'Upgrade your plan to unlock audio tools.',
+            child: AppCard(
+              onTap: () => context.push('/media/audio-tools'),
+              child: const ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: CircleAvatar(
+                  child: Icon(Icons.graphic_eq_outlined),
+                ),
+                title: Text('Audio tools'),
+                subtitle: Text('Transcribe, clean up, and enhance audio.'),
+                trailing: Icon(Icons.chevron_right),
+              ),
+            ),
           ),
           const SizedBox(height: AppSpacing.lg),
           _SectionHeader(title: 'Voice live'),

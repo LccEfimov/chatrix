@@ -135,14 +135,14 @@ Backend:
 - [-] Реальный live voice SDK (Agora/WebRTC) — позже
 
 Mobile:
-- [ ] Экран Voice:
+- [x] Экран Voice:
   - старт/стоп сессии
   - лимиты по тарифу
   - выбор голоса (2 для старта)
-- [ ] Экран Audio Tools (карточки возможностей, gated)
+- [x] Экран Audio Tools (карточки возможностей, gated)
 
 Tests:
-- [ ] widget smoke for voice screen
+- [x] widget smoke for voice screen
 
 ---
 
