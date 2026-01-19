@@ -15,7 +15,48 @@ class ChatriXApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const PlansScreen(),
+      home: const HomeShell(),
+    );
+  }
+}
+
+class HomeShell extends StatefulWidget {
+  const HomeShell({super.key});
+
+  @override
+  State<HomeShell> createState() => _HomeShellState();
+}
+
+class _HomeShellState extends State<HomeShell> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _screens = const [
+    PlansScreen(),
+    WalletScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.workspace_premium_outlined),
+            label: 'Plans',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            label: 'Wallet',
+          ),
+        ],
+      ),
     );
   }
 }
@@ -73,6 +114,121 @@ class PlansScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class WalletScreen extends StatelessWidget {
+  const WalletScreen({super.key});
+
+  static const topupProviders = [
+    _WalletInfo('Google Pay', 'Instant top-ups with cards linked to Google Pay'),
+    _WalletInfo('Apple Pay', 'Use your Apple Pay wallet for quick deposits'),
+    _WalletInfo('ЮMoney', 'Domestic RUB top-ups with YooMoney'),
+  ];
+
+  static const fxRates = [
+    _WalletInfo('USD → RUB', 'Latest CBR rate + 5% markup'),
+    _WalletInfo('EUR → RUB', 'Daily refresh at 00:00 MSK'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • Wallet')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Balance',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 12),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.account_balance_wallet,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Current balance',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '0 ₽',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Ledger-based accounting with idempotent top-ups.',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Top-up methods',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final provider in topupProviders) _InfoCard(info: provider),
+          const SizedBox(height: 24),
+          Text(
+            'FX conversion',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final rate in fxRates) _InfoCard(info: rate),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add_circle_outline),
+            label: const Text('Add funds'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WalletInfo {
+  const _WalletInfo(this.title, this.subtitle);
+
+  final String title;
+  final String subtitle;
+}
+
+class _InfoCard extends StatelessWidget {
+  const _InfoCard({required this.info});
+
+  final _WalletInfo info;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        title: Text(info.title),
+        subtitle: Text(info.subtitle),
+        trailing: const Icon(Icons.chevron_right),
       ),
     );
   }

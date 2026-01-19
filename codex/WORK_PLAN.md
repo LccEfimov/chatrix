@@ -17,10 +17,10 @@
 - [x] Сервис policy engine: проверка прав/лимитов
 
 ## Milestone 3 — Wallet/Payments + FX
-- [ ] Ledger (идемпотентность) и расчёт баланса
-- [ ] Top-up провайдеры: Google Pay / Apple Pay / ЮMoney (контракты + заглушки)
-- [ ] fx_rates: обновление курса ЦБ 1 раз/день и API latest
-- [ ] Конвертация FX → RUB: курс ЦБ +5%
+- [x] Ledger (идемпотентность) и расчёт баланса
+- [x] Top-up провайдеры: Google Pay / Apple Pay / ЮMoney (контракты + заглушки)
+- [x] fx_rates: обновление курса ЦБ 1 раз/день и API latest
+- [x] Конвертация FX → RUB: курс ЦБ +5%
 
 ## Milestone 4 — Referrals (до 25 уровней)
 - [ ] referral tree + rewards

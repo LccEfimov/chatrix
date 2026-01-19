@@ -1,15 +1,21 @@
 from app.models.auth_session import AuthSession
+from app.models.fx_rate import FxRate
 from app.models.oauth_account import OAuthAccount
 from app.models.plan import Plan
 from app.models.plan_entitlement import PlanEntitlement
 from app.models.plan_limit import PlanLimit
 from app.models.user import User
+from app.models.wallet_ledger import WalletLedgerEntry
+from app.models.wallet_topup import WalletTopup
 
 __all__ = [
     "AuthSession",
+    "FxRate",
     "OAuthAccount",
     "Plan",
     "PlanEntitlement",
     "PlanLimit",
     "User",
+    "WalletLedgerEntry",
+    "WalletTopup",
 ]
