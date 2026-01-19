@@ -37,3 +37,10 @@ Template:
 - Options considered: (1) Separate referral link table with generated codes, (2) adjacency list on users with UUID-based code.
 - Why: Keeps the tree traversal simple and allows deterministic referral links without extra tables.
 - Consequences: If marketing requires short/rotatable codes, a dedicated referral code table will be introduced and backfilled.
+
+- Date: 2026-01-20
+- Decision: Implemented Milestone 5 chat flows with persisted chat/message tables and a stub AI orchestrator provider ("stub") that returns deterministic placeholder replies.
+- Context: Milestone 5 requires chat + AI orchestrator, but no concrete provider integrations are specified yet.
+- Options considered: (1) Integrate a real provider immediately, (2) Stub the orchestrator with a configurable provider table and placeholder responses.
+- Why: Keeps API contracts and storage ready while allowing future provider integrations without schema changes.
+- Consequences: Real provider adapters and usage tracking must replace the stub responses in a future milestone.

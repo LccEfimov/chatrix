@@ -31,6 +31,7 @@ class _HomeShellState extends State<HomeShell> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = const [
+    ChatScreen(),
     PlansScreen(),
     WalletScreen(),
     ReferralsScreen(),
@@ -49,6 +50,10 @@ class _HomeShellState extends State<HomeShell> {
         },
         destinations: const [
           NavigationDestination(
+            icon: Icon(Icons.chat_bubble_outline),
+            label: 'Chat',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.workspace_premium_outlined),
             label: 'Plans',
           ),
@@ -59,6 +64,59 @@ class _HomeShellState extends State<HomeShell> {
           NavigationDestination(
             icon: Icon(Icons.group_outlined),
             label: 'Referrals',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
+
+  static const chats = [
+    _ChatPreview('Morning focus', 'System prompt: concise planning'),
+    _ChatPreview('Creative ideas', 'System prompt: playful tone'),
+    _ChatPreview('Project review', 'System prompt: structured recap'),
+  ];
+
+  static const suggestions = [
+    _ChatSuggestion('Summarize today', 'Generate a daily summary'),
+    _ChatSuggestion('Draft reply', 'Respond with a professional tone'),
+    _ChatSuggestion('Brainstorm', 'List three new ideas'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • Chat')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Text chats',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Create topic-based conversations with a custom system prompt.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          for (final chat in chats) _ChatCard(chat: chat),
+          const SizedBox(height: 24),
+          Text(
+            'Quick actions',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final suggestion in suggestions)
+            _ChatSuggestionCard(suggestion: suggestion),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add_comment_outlined),
+            label: const Text('New chat'),
           ),
         ],
       ),
@@ -420,6 +478,63 @@ class _PlanCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ChatPreview {
+  const _ChatPreview(this.title, this.subtitle);
+
+  final String title;
+  final String subtitle;
+}
+
+class _ChatSuggestion {
+  const _ChatSuggestion(this.title, this.subtitle);
+
+  final String title;
+  final String subtitle;
+}
+
+class _ChatCard extends StatelessWidget {
+  const _ChatCard({required this.chat});
+
+  final _ChatPreview chat;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          child: const Icon(Icons.forum_outlined),
+        ),
+        title: Text(chat.title),
+        subtitle: Text(chat.subtitle),
+        trailing: const Icon(Icons.chevron_right),
+      ),
+    );
+  }
+}
+
+class _ChatSuggestionCard extends StatelessWidget {
+  const _ChatSuggestionCard({required this.suggestion});
+
+  final _ChatSuggestion suggestion;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: const Icon(Icons.auto_awesome_outlined),
+        ),
+        title: Text(suggestion.title),
+        subtitle: Text(suggestion.subtitle),
       ),
     );
   }

@@ -19,7 +19,10 @@ from app.api.deps import get_db  # noqa: E402
 from app.db.base import Base  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.models import (  # noqa: F401, E402
+    ai_provider,
     auth_session,
+    chat,
+    chat_message,
     fx_rate,
     oauth_account,
     plan,
@@ -60,6 +63,14 @@ def db_session() -> Generator[Session, None, None]:
                 ('BLD_DOCS', 'Builder • Docs', 3, 700, 1),
                 ('VIP', 'VIP • Signature', NULL, 15000, 1),
                 ('DEV', 'Developer • Gate', 12, 5000, 1)
+                """
+            )
+        )
+        session.execute(
+            text(
+                """
+                INSERT INTO ai_providers (code, display_name, is_active, created_at) VALUES
+                ('stub', 'Stub Provider', 1, CURRENT_TIMESTAMP)
                 """
             )
         )
