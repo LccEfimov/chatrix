@@ -9,6 +9,8 @@ from app.core.config import settings
 from app.db.base import Base
 
 # import models to register metadata
+from app.models.auth_session import AuthSession  # noqa: F401
+from app.models.oauth_account import OAuthAccount  # noqa: F401
 from app.models.user import User  # noqa: F401
 
 config = context.config
