@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.api.v1.endpoints.ai import router as ai_router
 from app.api.v1.endpoints.auth import router as auth_router
 from app.api.v1.endpoints.chat import router as chat_router
+from app.api.v1.endpoints.devbox import router as devbox_router
 from app.api.v1.endpoints.fx import router as fx_router
 from app.api.v1.endpoints.health import router as health_router
 from app.api.v1.endpoints.files import router as files_router
@@ -24,5 +25,6 @@ api_router.include_router(fx_router, tags=["fx"])
 api_router.include_router(referrals_router, tags=["referrals"])
 api_router.include_router(chat_router, tags=["chat"])
 api_router.include_router(media_router, tags=["media"])
+api_router.include_router(devbox_router, tags=["devbox"])
 api_router.include_router(sections_router, tags=["sections"])
 api_router.include_router(files_router, tags=["files"])
