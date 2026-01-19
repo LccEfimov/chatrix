@@ -26,16 +26,16 @@ Acceptance:
 
 ## Milestone 01 — Mobile Foundation (сборка, дизайн‑система, навигация)
 - [ ] Создать полноценный Flutter scaffold (`flutter create`), чтобы появились `android/`, gradle и т.д.
-- [ ] Подключить зависимости: `flutter_riverpod`, `go_router`, `dio`, `flutter_secure_storage`, `freezed`/`json_serializable` (по желанию)
-- [ ] Ввести архитектуру папок:
+- [x] Подключить зависимости: `flutter_riverpod`, `go_router`, `dio`, `flutter_secure_storage`, `freezed`/`json_serializable` (по желанию)
+- [x] Ввести архитектуру папок:
   - `lib/app/*` (boot, shell)
   - `lib/theme/*` (tokens, typography)
   - `lib/ui/components/*` (buttons/cards/inputs/sheets)
   - `lib/features/*` (auth, plans, wallet, referrals, chat, sections...)
   - `lib/api/*` (client, interceptors)
-- [ ] Дизайн‑система: tokens (цвет/типографика/радиусы/spacing/animation durations)
-- [ ] AppShell: обработка ошибок, snackbar/toast, loading overlay, offline banner
-- [ ] Навигация (go_router) + заглушки экранов
+- [x] Дизайн‑система: tokens (цвет/типографика/радиусы/spacing/animation durations)
+- [x] AppShell: обработка ошибок, snackbar/toast, loading overlay, offline banner
+- [x] Навигация (go_router) + заглушки экранов
 - [ ] Tests: 1 widget test + 1 golden test (AppShell)
 
 Acceptance:
