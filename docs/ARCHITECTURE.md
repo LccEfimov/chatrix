@@ -6,6 +6,7 @@ This file is ADR-lite architecture overview. Codex must keep it updated as modul
 - Backend: FastAPI + PostgreSQL, modular services
 - Storage: S3-compatible object storage
 - Workers: background jobs for media and AI pipelines
+- Observability: structured JSON logs with correlation ids
 
 ## Service boundaries
 - Auth & Accounts
