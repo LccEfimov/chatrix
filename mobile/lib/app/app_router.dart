@@ -13,6 +13,7 @@ import '../features/plans/plans_screen.dart';
 import '../features/referrals/referrals_screen.dart';
 import '../features/sections/sections_screen.dart';
 import '../features/support/support_screen.dart';
+import '../features/wallet/fx_rates_screen.dart';
 import '../features/wallet/wallet_screen.dart';
 import 'app_shell.dart';
 import 'navigation_shell.dart';
@@ -121,6 +122,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: _walletPath,
                 builder: (context, state) => const WalletScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'fx',
+                    builder: (context, state) => const FxRatesScreen(),
+                  ),
+                ],
               ),
             ],
           ),
