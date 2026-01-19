@@ -1,5 +1,19 @@
 from app.schemas.auth import AuthResponse, OAuthCallbackRequest, RefreshRequest
 from app.schemas.fx import FxRateResponse
+from app.schemas.media import (
+    ImageJobCreateRequest,
+    ImageJobListResponse,
+    ImageJobResponse,
+    VideoAvatarCreateRequest,
+    VideoAvatarListResponse,
+    VideoAvatarResponse,
+    VideoJobCreateRequest,
+    VideoJobListResponse,
+    VideoJobResponse,
+    VoiceSessionCreateRequest,
+    VoiceSessionListResponse,
+    VoiceSessionResponse,
+)
 from app.schemas.plans import (
     PlanEntitlementResponse,
     PlanLimitResponse,
@@ -20,6 +34,9 @@ from app.schemas.wallet import (
 __all__ = [
     "AuthResponse",
     "FxRateResponse",
+    "ImageJobCreateRequest",
+    "ImageJobListResponse",
+    "ImageJobResponse",
     "OAuthCallbackRequest",
     "PlanEntitlementResponse",
     "PlanLimitResponse",
@@ -31,6 +48,15 @@ __all__ = [
     "TopupConfirmResponse",
     "TopupInitRequest",
     "TopupInitResponse",
+    "VideoAvatarCreateRequest",
+    "VideoAvatarListResponse",
+    "VideoAvatarResponse",
+    "VideoJobCreateRequest",
+    "VideoJobListResponse",
+    "VideoJobResponse",
+    "VoiceSessionCreateRequest",
+    "VoiceSessionListResponse",
+    "VoiceSessionResponse",
     "WalletBalanceResponse",
     "WalletLedgerEntryResponse",
     "WalletLedgerResponse",

@@ -32,6 +32,7 @@ class _HomeShellState extends State<HomeShell> {
 
   final List<Widget> _screens = const [
     ChatScreen(),
+    MediaScreen(),
     PlansScreen(),
     WalletScreen(),
     ReferralsScreen(),
@@ -52,6 +53,10 @@ class _HomeShellState extends State<HomeShell> {
           NavigationDestination(
             icon: Icon(Icons.chat_bubble_outline),
             label: 'Chat',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.graphic_eq_outlined),
+            label: 'Media',
           ),
           NavigationDestination(
             icon: Icon(Icons.workspace_premium_outlined),
@@ -175,6 +180,85 @@ class PlansScreen extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MediaScreen extends StatelessWidget {
+  const MediaScreen({super.key});
+
+  static const voiceModes = [
+    _MediaCardData('Live voice', 'Low-latency sessions', Icons.mic_outlined),
+    _MediaCardData('Studio voice', 'Prompt-driven voice replies', Icons.headset_mic_outlined),
+  ];
+
+  static const videoAvatars = [
+    _MediaCardData('Avatar host', 'Photo-to-video persona', Icons.face_retouching_natural),
+    _MediaCardData('Scripted presenter', 'Prompt-based narration', Icons.smart_display_outlined),
+  ];
+
+  static const imageTools = [
+    _MediaCardData('Image generation', 'Create branded visuals', Icons.image_outlined),
+    _MediaCardData('Style remix', 'Apply visual styles', Icons.auto_awesome_motion_outlined),
+  ];
+
+  static const videoTools = [
+    _MediaCardData('Video generation', 'Storyboard to motion', Icons.videocam_outlined),
+    _MediaCardData('Avatar video', 'Talking head clips', Icons.movie_creation_outlined),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ChatriX • Media')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            'Voice, Video & Tools',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Launch live voice, manage avatar sessions, and queue media jobs.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Voice live',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final item in voiceModes) _MediaCard(item: item),
+          const SizedBox(height: 24),
+          Text(
+            'Video avatars',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final item in videoAvatars) _MediaCard(item: item),
+          const SizedBox(height: 24),
+          Text(
+            'Image tools',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final item in imageTools) _MediaCard(item: item),
+          const SizedBox(height: 24),
+          Text(
+            'Video tools',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          for (final item in videoTools) _MediaCard(item: item),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add_circle_outline),
+            label: const Text('Start media session'),
           ),
         ],
       ),
@@ -535,6 +619,36 @@ class _ChatSuggestionCard extends StatelessWidget {
         ),
         title: Text(suggestion.title),
         subtitle: Text(suggestion.subtitle),
+      ),
+    );
+  }
+}
+
+class _MediaCardData {
+  const _MediaCardData(this.title, this.subtitle, this.icon);
+
+  final String title;
+  final String subtitle;
+  final IconData icon;
+}
+
+class _MediaCard extends StatelessWidget {
+  const _MediaCard({required this.item});
+
+  final _MediaCardData item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: Icon(item.icon),
+        ),
+        title: Text(item.title),
+        subtitle: Text(item.subtitle),
+        trailing: const Icon(Icons.chevron_right),
       ),
     );
   }
