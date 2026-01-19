@@ -43,9 +43,9 @@
 - [x] UX-конфиг + AI-workflow
 
 ## Milestone 8 — Docs (файлы)
-- [ ] Upload/Download + квоты
-- [ ] Whitelist форматов из ТЗ
-- [ ] Парсеры адаптерами (минимально: txt/md/csv/docx/pdf)
+- [x] Upload/Download + квоты
+- [x] Whitelist форматов из ТЗ
+- [x] Парсеры адаптерами (минимально: txt/md/csv/docx/pdf)
 
 ## Milestone 9 — Developer DevBox
 - [ ] DEV add-on: Dev-Container

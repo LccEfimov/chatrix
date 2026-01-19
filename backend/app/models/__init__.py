@@ -2,6 +2,7 @@ from app.models.ai_provider import AiProvider
 from app.models.auth_session import AuthSession
 from app.models.chat import Chat
 from app.models.chat_message import ChatMessage
+from app.models.file import StoredFile
 from app.models.fx_rate import FxRate
 from app.models.image_job import ImageJob
 from app.models.oauth_account import OAuthAccount
@@ -23,6 +24,7 @@ __all__ = [
     "AuthSession",
     "Chat",
     "ChatMessage",
+    "StoredFile",
     "FxRate",
     "ImageJob",
     "OAuthAccount",
