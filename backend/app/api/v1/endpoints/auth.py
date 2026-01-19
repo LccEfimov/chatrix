@@ -23,6 +23,16 @@ from app.schemas.auth import (
     UserProvider,
 )
 from app.services.auth import create_access_token, create_refresh_token, decode_token
+from app.services.oauth import (
+    OAuthError,
+    OAuthExchangeError,
+    OAuthProviderNotConfigured,
+    OAuthStateError,
+    build_authorization_url,
+    create_oauth_state,
+    exchange_code_for_profile,
+    get_oauth_state,
+)
 
 router = APIRouter()
 
@@ -49,9 +59,14 @@ def _user_response(user: User, providers: list[OAuthAccount]) -> UserMeResponse:
 
 
 @router.post("/auth/oauth/{provider}/start", response_model=OAuthStartResponse)
-def oauth_start(provider: str) -> OAuthStartResponse:
+def oauth_start(provider: str, db: Session = Depends(get_db)) -> OAuthStartResponse:
     provider = _validate_provider(provider)
-    return OAuthStartResponse(provider=provider, auth_url=f"https://oauth.example/{provider}")
+    try:
+        state_data = create_oauth_state(db, provider)
+        auth_url = build_authorization_url(provider, state_data.state, state_data.code_challenge)
+    except OAuthProviderNotConfigured as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
+    return OAuthStartResponse(provider=provider, auth_url=auth_url, state=state_data.state)
 
 
 @router.post("/auth/oauth/{provider}/callback", response_model=AuthResponse)
@@ -62,26 +77,39 @@ def oauth_callback(
 ) -> AuthResponse:
     provider = _validate_provider(provider)
 
+    try:
+        oauth_state = get_oauth_state(db, provider, payload.state)
+        profile = exchange_code_for_profile(provider, payload.code, oauth_state.code_verifier)
+        db.delete(oauth_state)
+    except OAuthProviderNotConfigured as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
+    except OAuthStateError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+    except OAuthExchangeError as exc:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(exc)) from exc
+    except OAuthError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
     account = db.execute(
         select(OAuthAccount).where(
             OAuthAccount.provider == provider,
-            OAuthAccount.provider_user_id == payload.provider_user_id,
+            OAuthAccount.provider_user_id == profile.provider_user_id,
         )
     ).scalar_one_or_none()
 
     if account:
         user = db.get(User, account.user_id)
     else:
-        user = db.execute(select(User).where(User.email == payload.email)).scalar_one_or_none()
+        user = db.execute(select(User).where(User.email == profile.email)).scalar_one_or_none()
         if not user:
-            user = User(email=payload.email)
+            user = User(email=profile.email)
             db.add(user)
             db.flush()
 
         account = OAuthAccount(
             user_id=user.id,
             provider=provider,
-            provider_user_id=payload.provider_user_id,
+            provider_user_id=profile.provider_user_id,
         )
         db.add(account)
 
@@ -160,10 +188,22 @@ def link_provider(
     db: Session = Depends(get_db),
 ) -> UserMeResponse:
     provider = _validate_provider(provider)
+    try:
+        oauth_state = get_oauth_state(db, provider, payload.state)
+        profile = exchange_code_for_profile(provider, payload.code, oauth_state.code_verifier)
+        db.delete(oauth_state)
+    except OAuthProviderNotConfigured as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
+    except OAuthStateError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+    except OAuthExchangeError as exc:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(exc)) from exc
+    except OAuthError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
     existing = db.execute(
         select(OAuthAccount).where(
             OAuthAccount.provider == provider,
-            OAuthAccount.provider_user_id == payload.provider_user_id,
+            OAuthAccount.provider_user_id == profile.provider_user_id,
         )
     ).scalar_one_or_none()
     if existing and existing.user_id != user.id:
@@ -173,7 +213,7 @@ def link_provider(
             OAuthAccount(
                 user_id=user.id,
                 provider=provider,
-                provider_user_id=payload.provider_user_id,
+                provider_user_id=profile.provider_user_id,
             )
         )
         db.commit()

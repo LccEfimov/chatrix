@@ -11,6 +11,7 @@ from app.db.base import Base
 # import models to register metadata
 from app.models.auth_session import AuthSession  # noqa: F401
 from app.models.oauth_account import OAuthAccount  # noqa: F401
+from app.models.oauth_state import OAuthState  # noqa: F401
 from app.models.plan import Plan  # noqa: F401
 from app.models.plan_entitlement import PlanEntitlement  # noqa: F401
 from app.models.plan_limit import PlanLimit  # noqa: F401

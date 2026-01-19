@@ -9,17 +9,14 @@ def _auth_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-def _login(client, *, provider: str, provider_user_id: str, email: str) -> str:
-    response = client.post(
-        f"/v1/auth/oauth/{provider}/callback",
-        json={"provider_user_id": provider_user_id, "email": email},
-    )
+def _login(oauth_login, *, provider: str, provider_user_id: str, email: str) -> str:
+    response = oauth_login(provider=provider, email=email, provider_user_id=provider_user_id)
     return response.json()["tokens"]["access_token"]
 
 
-def test_referral_me_zero_plan(client) -> None:
+def test_referral_me_zero_plan(client, oauth_login) -> None:
     token = _login(
-        client,
+        oauth_login,
         provider="google",
         provider_user_id="referral-zero",
         email="referral-zero@example.com",
@@ -32,9 +29,9 @@ def test_referral_me_zero_plan(client) -> None:
     assert data["referral_url"] is None
 
 
-def test_referral_rewards_and_tree(client, db_session) -> None:
+def test_referral_rewards_and_tree(client, db_session, oauth_login) -> None:
     inviter_token = _login(
-        client,
+        oauth_login,
         provider="google",
         provider_user_id="referrer-1",
         email="referrer@example.com",
@@ -48,13 +45,13 @@ def test_referral_rewards_and_tree(client, db_session) -> None:
     db_session.commit()
 
     invitee_token = _login(
-        client,
+        oauth_login,
         provider="google",
         provider_user_id="invitee-1",
         email="invitee@example.com",
     )
     _login(
-        client,
+        oauth_login,
         provider="apple",
         provider_user_id="invitee-1-apple",
         email="invitee@example.com",

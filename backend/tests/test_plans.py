@@ -2,9 +2,8 @@ def _auth_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-def _login(client) -> str:
-    payload = {"provider_user_id": "google-200", "email": "plan-user@example.com"}
-    response = client.post("/v1/auth/oauth/google/callback", json=payload)
+def _login(oauth_login) -> str:
+    response = oauth_login(provider="google", email="plan-user@example.com", provider_user_id="google-200")
     return response.json()["tokens"]["access_token"]
 
 
@@ -17,8 +16,8 @@ def test_list_plans(client) -> None:
     assert {"ZERO", "CORE", "DEV"}.issubset(codes)
 
 
-def test_activate_subscription(client) -> None:
-    access_token = _login(client)
+def test_activate_subscription(client, oauth_login) -> None:
+    access_token = _login(oauth_login)
     activate_response = client.post(
         "/v1/subscriptions/activate",
         json={"plan_code": "CORE"},

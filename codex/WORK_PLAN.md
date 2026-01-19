@@ -203,7 +203,7 @@ Mobile:
 ---
 
 ## Milestone 12 — Replace STUB With REAL (интеграции)
-- [ ] OAuth real flows (Google/Apple/Yandex/TG/Discord/TikTok)
+- [x] OAuth real flows (Google/Apple/Yandex/TG/Discord/TikTok)
 - [ ] Payments real (Google Pay/Apple Pay/ЮMoney): подписи, webhooks, idempotency, sandbox/prod
 - [ ] AI providers real (OpenAI + optional others): metering, retries, rate limits
 - [ ] S3/MinIO upload real + signed URLs
