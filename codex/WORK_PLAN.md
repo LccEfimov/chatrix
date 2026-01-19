@@ -1,56 +1,219 @@
-# План работ (Codex) — ChatriX
+# ChatriX — WORK_PLAN для Codex (реалистичный, с Quality Gates)
 
-## Milestone 0 — Каркас (готово)
-- [x] Monorepo структура
-- [x] Backend skeleton (FastAPI + Postgres)
-- [x] Docker compose
-- [x] Docs placeholders
+Легенда статусов:
+- `[x]` DONE (CI зелёный, тесты есть)
+- `[-]` DONE‑STUB (функционал заглушкой, есть тесты заглушки, есть отдельный пункт на замену)
+- `[ ]` TODO
 
-## Milestone 1 — Auth & Accounts
-- [x] OAuth провайдеры: Google / Apple / Yandex / Telegram / Discord / TikTok
-- [x] Привязка нескольких провайдеров к одному user
-- [x] JWT sessions + refresh
+## Quality Gates (нельзя обойти)
+Перед началом **каждого** пункта и после выполнения:
+- запуск `./scripts/ci.sh`
+- если красно — фикс до зелёного
 
-## Milestone 2 — Plans/Entitlements (12 тарифов)
-- [x] Таблицы: plans, plan_limits, plan_entitlements
-- [x] Инициализация тарифов: ZERO, CORE, START, PRIME, ADVANCED, STUDIO, BUSINESS, BLD_DIALOGUE, BLD_MEDIA, BLD_DOCS, VIP, DEV
-- [x] Сервис policy engine: проверка прав/лимитов
+---
 
-## Milestone 3 — Wallet/Payments + FX
-- [x] Ledger (идемпотентность) и расчёт баланса
-- [x] Top-up провайдеры: Google Pay / Apple Pay / ЮMoney (контракты + заглушки)
-- [x] fx_rates: обновление курса ЦБ 1 раз/день и API latest
-- [x] Конвертация FX → RUB: курс ЦБ +5%
+## Milestone 00 — Repository Excellence (обязательный фундамент)
+- [ ] `scripts/test_backend.sh` (pytest в Docker и/или локально)
+- [ ] `scripts/test_mobile.sh` (flutter analyze + flutter test в Docker)
+- [ ] `scripts/ci.sh` (backend tests + mobile tests; опционально build APK)
+- [ ] Добавить dev‑линтеры (backend: ruff/black) и команды `scripts/lint_backend.sh`, `scripts/fmt_backend.sh`
+- [ ] Обновить `README.md` (как гонять CI локально)
 
-## Milestone 4 — Referrals (до 25 уровней)
-- [x] referral tree + rewards
-- [x] Условия начисления: платёж + ≥2 провайдера
-- [x] Хранить проценты по уровням в БД (конфиг)
+Acceptance:
+- `./scripts/ci.sh` зелёный на чистой машине
 
-## Milestone 5 — Chat (text)
-- [x] Чаты/сообщения
-- [x] AI-orchestrator
+---
 
-## Milestone 6 — Media
-- [x] Voice live
-- [x] Video avatar
-- [x] Image tools
-- [x] Video tools
+## Milestone 01 — Mobile Foundation (сборка, дизайн‑система, навигация)
+- [ ] Создать полноценный Flutter scaffold (`flutter create`), чтобы появились `android/`, gradle и т.д.
+- [ ] Подключить зависимости: `flutter_riverpod`, `go_router`, `dio`, `flutter_secure_storage`, `freezed`/`json_serializable` (по желанию)
+- [ ] Ввести архитектуру папок:
+  - `lib/app/*` (boot, shell)
+  - `lib/theme/*` (tokens, typography)
+  - `lib/ui/components/*` (buttons/cards/inputs/sheets)
+  - `lib/features/*` (auth, plans, wallet, referrals, chat, sections...)
+  - `lib/api/*` (client, interceptors)
+- [ ] Дизайн‑система: tokens (цвет/типографика/радиусы/spacing/animation durations)
+- [ ] AppShell: обработка ошибок, snackbar/toast, loading overlay, offline banner
+- [ ] Навигация (go_router) + заглушки экранов
+- [ ] Tests: 1 widget test + 1 golden test (AppShell)
 
-## Milestone 7 — Sections Builder (Hobby/Study/Work)
-- [x] Создание разделов по брифу
-- [x] 3 раздела бесплатно, далее 300 ₽/3м
-- [x] UX-конфиг + AI-workflow
+Acceptance:
+- `./scripts/test_mobile.sh` зелёный
+- `./scripts/build_apk_docker.sh` даёт APK
 
-## Milestone 8 — Docs (файлы)
-- [x] Upload/Download + квоты
-- [x] Whitelist форматов из ТЗ
-- [x] Парсеры адаптерами (минимально: txt/md/csv/docx/pdf)
+---
 
-## Milestone 9 — Developer DevBox
-- [x] DEV add-on: Dev-Container
-- [x] infra_rates + формула стоимости
-- [x] Пакеты S/M/L
+## Milestone 02 — Auth UX + Sessions (ZERO после регистрации)
+Backend статус:
+- [x] Auth endpoints (JWT + refresh) и tests (sqlite)
+- [-] OAuth provider adapters (сейчас упрощённые callbacks; заменить на real позже)
 
-## Milestone 10 — Полировка
-- [x] UX polish, analytics, support
+Mobile:
+- [ ] Экран Onboarding/Login (Material 3, красиво, анимация)
+- [ ] Social buttons (Google/Apple/Yandex/TG/Discord/TikTok) — пока STUB UI + wiring на backend контракт
+- [ ] Secure token storage + refresh flow
+- [ ] Экран “Профиль/Привязки” (link/unlink providers)
+- [ ] Логика ZERO:
+  - после регистрации тариф ZERO
+  - скрыть referral entrypoint
+
+Tests:
+- [ ] widget tests: login UI states
+- [ ] integration test (smoke): login -> /me
+
+---
+
+## Milestone 03 — Plans/Entitlements + Paywall UX
+Backend:
+- [x] Plans/limits/entitlements + policy engine tests
+
+Mobile:
+- [ ] Экран “Тарифы/Paywall” (12 тарифов, красиво)
+- [ ] Экран “Мой тариф и лимиты”
+- [ ] UI‑гейтинг функций по entitlements (сервер — источник истины)
+
+Tests:
+- [ ] golden: paywall
+- [ ] unit: entitlement gating mapper
+
+---
+
+## Milestone 04 — Wallet + TopUp + FX (Google Pay / Apple Pay / ЮMoney)
+Backend:
+- [x] Ledger + topup contracts + FX расчёт (ЦБ +5%) + tests
+- [-] Реальная интеграция платежей (webhooks/подписи) — заменить позже
+
+Mobile:
+- [ ] Экран “Баланс” (RUB, копейки) + история ledger
+- [ ] Пополнение: выбор провайдера, сумма, подтверждение (contract)
+- [ ] Экран “Курс ЦБ” (инфо: дата курса, +5%)
+
+Tests:
+- [ ] widget: wallet screen states
+
+---
+
+## Milestone 05 — Referrals (до 25 уровней) + дерево
+Backend:
+- [x] Referral tree + rewards + tiers config in DB + tests
+
+Mobile:
+- [ ] Экран Referrals:
+  - скрыт для ZERO
+  - ссылка/QR/код приглашения для платных
+  - дерево до N уровней (пагинация)
+  - rewards list
+- [ ] Возможность открыть чат с рефералом (по id)
+
+Tests:
+- [ ] widget: referrals hidden for ZERO
+
+---
+
+## Milestone 06 — Chat (text) + AI Orchestrator (MVP)
+Backend:
+- [x] chats/messages endpoints + AI orchestrator stub provider + tests
+- [-] Реальные AI провайдеры (OpenAI и др.) — заменить позже
+
+Mobile:
+- [ ] Список чатов + создание чата
+- [ ] Экран чата:
+  - streaming UI (если backend поддерживает), иначе polling
+  - attachments entrypoint (будущие)
+  - настройки чата (prompt, voice/video settings gated)
+- [ ] Красивые message bubbles + animations
+
+Tests:
+- [ ] golden: chat screen
+
+---
+
+## Milestone 07 — Voice (MVP) + Audio Tools
+Backend:
+- [x] voice session models/endpoints (если есть)
+- [-] Реальный live voice SDK (Agora/WebRTC) — позже
+
+Mobile:
+- [ ] Экран Voice:
+  - старт/стоп сессии
+  - лимиты по тарифу
+  - выбор голоса (2 для старта)
+- [ ] Экран Audio Tools (карточки возможностей, gated)
+
+Tests:
+- [ ] widget smoke for voice screen
+
+---
+
+## Milestone 08 — Video Avatar / Video Tools (MVP)
+Backend:
+- [x] video models/endpoints (если есть)
+- [-] Реальная генерация/анимация — позже
+
+Mobile:
+- [ ] Экран Video:
+  - список “video chats”
+  - создание: title + media + voice + prompt
+  - демо 10 сек для стартовых, unlimited для топ‑планов
+- [ ] Экран Video Tools (gated)
+
+---
+
+## Milestone 09 — Storage/Files + DOCS whitelist
+Backend:
+- [x] files metadata + whitelist + parsers adapters (минимальные) + tests
+- [-] Реальный S3/MinIO upload (init/complete) — заменить позже
+
+Mobile:
+- [ ] Экран Files:
+  - загрузка (пока простой multipart) + список
+  - квоты, занято/лимит
+- [ ] Экран Docs:
+  - выбор файла
+  - preview (где возможно) и “AI summary/QA” (через backend)
+
+---
+
+## Milestone 10 — Sections Builder (Hobby/Study/Work)
+Backend:
+- [x] sections CRUD + pricing (3 free then paid) + tests
+
+Mobile:
+- [ ] Экран Hobby/Study/Work:
+  - библиотека готовых UI‑элементов
+  - создание раздела через бриф (form)
+  - paywall на 4+ раздел
+  - список разделов + запуск workflow
+
+---
+
+## Milestone 11 — Developer DevBox (платный add‑on)
+Backend:
+- [x] devbox pricing + packages + tests
+- [-] Реальное управление контейнерами (docker/k8s) — позже
+
+Mobile:
+- [ ] Экран Work (DEV):
+  - DevBox packages
+  - выбор стека
+  - старт/стоп/status
+  - биллинг add‑on
+
+---
+
+## Milestone 12 — Replace STUB With REAL (интеграции)
+- [ ] OAuth real flows (Google/Apple/Yandex/TG/Discord/TikTok)
+- [ ] Payments real (Google Pay/Apple Pay/ЮMoney): подписи, webhooks, idempotency, sandbox/prod
+- [ ] AI providers real (OpenAI + optional others): metering, retries, rate limits
+- [ ] S3/MinIO upload real + signed URLs
+- [ ] Voice/Video real (Agora/WebRTC) + device permissions
+
+---
+
+## Milestone 13 — Release readiness
+- [ ] End‑to‑end smoke tests (backend+mobile)
+- [ ] Crash reporting (Sentry) — optional decision
+- [ ] Observability (structured logs, correlation ids)
+- [ ] Android release pipeline (versioning, keystore instructions)
+
