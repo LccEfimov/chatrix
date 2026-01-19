@@ -14,6 +14,8 @@ import '../features/plans/plans_screen.dart';
 import '../features/referrals/referrals_screen.dart';
 import '../features/sections/sections_screen.dart';
 import '../features/support/support_screen.dart';
+import '../features/voice/audio_tools_screen.dart';
+import '../features/voice/voice_screen.dart';
 import '../features/wallet/fx_rates_screen.dart';
 import '../features/wallet/wallet_screen.dart';
 import 'app_shell.dart';
@@ -92,6 +94,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: _mediaPath,
                 builder: (context, state) => const MediaScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'voice',
+                    builder: (context, state) => const VoiceScreen(),
+                  ),
+                  GoRoute(
+                    path: 'audio-tools',
+                    builder: (context, state) => const AudioToolsScreen(),
+                  ),
+                ],
               ),
             ],
           ),
