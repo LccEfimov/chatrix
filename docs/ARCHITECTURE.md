@@ -16,4 +16,4 @@ This file is ADR-lite architecture overview. Codex must keep it updated as modul
 - Media
 - Storage
 - Referrals
-- Projects (Hobby/Study/Work)
+- Sections Builder (Hobby/Study/Work)

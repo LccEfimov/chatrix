@@ -38,9 +38,9 @@
 - [x] Video tools
 
 ## Milestone 7 — Sections Builder (Hobby/Study/Work)
-- [ ] Создание разделов по брифу
-- [ ] 3 раздела бесплатно, далее 300 ₽/3м
-- [ ] UX-конфиг + AI-workflow
+- [x] Создание разделов по брифу
+- [x] 3 раздела бесплатно, далее 300 ₽/3м
+- [x] UX-конфиг + AI-workflow
 
 ## Milestone 8 — Docs (файлы)
 - [ ] Upload/Download + квоты

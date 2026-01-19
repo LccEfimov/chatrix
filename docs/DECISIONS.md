@@ -44,3 +44,10 @@ Template:
 - Options considered: (1) Integrate a real provider immediately, (2) Stub the orchestrator with a configurable provider table and placeholder responses.
 - Why: Keeps API contracts and storage ready while allowing future provider integrations without schema changes.
 - Consequences: Real provider adapters and usage tracking must replace the stub responses in a future milestone.
+
+- Date: 2026-01-20
+- Decision: Sections beyond the free 3 are created with a stored fee (300 ₽ / 3 months) and a note indicating payment is required; no payment capture occurs in Milestone 7.
+- Context: Milestone 7 requires enforcing the free section quota and pricing, but there is no dedicated billing flow for section add-ons yet.
+- Options considered: (1) Block creation without immediate payment, (2) Allow creation while recording the fee for later billing.
+- Why: Keeps API usable while preserving pricing metadata for later billing integration.
+- Consequences: Billing enforcement must be added to prevent unpaid premium sections in production.

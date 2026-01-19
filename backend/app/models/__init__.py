@@ -10,6 +10,7 @@ from app.models.plan_entitlement import PlanEntitlement
 from app.models.plan_limit import PlanLimit
 from app.models.referral_reward import ReferralReward
 from app.models.referral_tier import ReferralTier
+from app.models.section import Section
 from app.models.user import User
 from app.models.video_avatar import VideoAvatar
 from app.models.video_job import VideoJob
@@ -30,6 +31,7 @@ __all__ = [
     "PlanLimit",
     "ReferralReward",
     "ReferralTier",
+    "Section",
     "User",
     "VideoAvatar",
     "VideoJob",
