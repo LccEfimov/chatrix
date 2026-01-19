@@ -79,3 +79,10 @@ Template:
 - Options considered: (1) Keep user data from `/auth/oauth/{provider}/callback` only, (2) call `/me` after login to validate the session and keep profile data fresh, (3) implement refresh via explicit calls in UI only.
 - Why: Calling `/me` ensures tokens are validated immediately and keeps profile data in sync, while the interceptor-based refresh keeps the flow centralized and reduces UI coupling.
 - Consequences: Real OAuth flows should replace the stubbed provider user id generation and email input once provider SDKs are integrated.
+
+- Date: 2026-01-23
+- Decision: Defined a mobile entitlement key catalog (chat, voice, video, tools_audio, tools_image, tools_video, docs, sections, devbox) and gated UI actions based on the server-provided entitlements map, defaulting missing keys to disabled.
+- Context: Milestone 03 requires UI gating by entitlements, but the TZ does not define specific entitlement keys or default behavior when keys are absent.
+- Options considered: (1) Hardcode plan access in the client, (2) Define a shared entitlement key catalog in the client and rely on backend config, (3) Treat missing keys as enabled to avoid blocking.
+- Why: Keeps the server as the source of truth and provides a deterministic mapping for UI gating without baking plan logic into the app.
+- Consequences: Backend plan entitlements must be seeded with matching keys to unlock features; missing keys will appear locked in the client.

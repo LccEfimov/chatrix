@@ -4,6 +4,8 @@ import '../../theme/app_spacing.dart';
 import '../../ui/components/app_button.dart';
 import '../../ui/components/app_card.dart';
 import '../../ui/components/app_scaffold.dart';
+import '../../ui/components/entitlement_gate.dart';
+import '../plans/plan_entitlements.dart';
 
 class DocsScreen extends StatelessWidget {
   const DocsScreen({super.key});
@@ -80,10 +82,15 @@ class DocsScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           for (final file in recentFiles) DocFileCard(file: file),
           const SizedBox(height: AppSpacing.lg),
-          AppPrimaryButton(
-            label: 'Upload file',
-            icon: Icons.upload_file_outlined,
-            onPressed: () {},
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.docs,
+            lockedTitle: 'Docs access locked',
+            lockedSubtitle: 'Upgrade your plan to upload and parse docs.',
+            child: AppPrimaryButton(
+              label: 'Upload file',
+              icon: Icons.upload_file_outlined,
+              onPressed: () {},
+            ),
           ),
         ],
       ),

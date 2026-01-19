@@ -4,6 +4,8 @@ import '../../theme/app_spacing.dart';
 import '../../ui/components/app_button.dart';
 import '../../ui/components/app_card.dart';
 import '../../ui/components/app_scaffold.dart';
+import '../../ui/components/entitlement_gate.dart';
+import '../plans/plan_entitlements.dart';
 
 class SectionsScreen extends StatelessWidget {
   const SectionsScreen({super.key});
@@ -50,10 +52,15 @@ class SectionsScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           for (final item in checklist) SectionChecklistCard(item: item),
           const SizedBox(height: AppSpacing.lg),
-          AppPrimaryButton(
-            label: 'Start new section',
-            icon: Icons.add_circle_outline,
-            onPressed: () {},
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.sections,
+            lockedTitle: 'Sections locked',
+            lockedSubtitle: 'Upgrade your plan to create new sections.',
+            child: AppPrimaryButton(
+              label: 'Start new section',
+              icon: Icons.add_circle_outline,
+              onPressed: () {},
+            ),
           ),
         ],
       ),
