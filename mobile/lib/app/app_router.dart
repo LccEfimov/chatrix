@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/auth_controller.dart';
 import '../features/auth/login_screen.dart';
 import '../features/auth/profile_screen.dart';
+import '../features/chat/chat_detail_screen.dart';
 import '../features/chat/chat_screen.dart';
 import '../features/devbox/devbox_screen.dart';
 import '../features/docs/docs_screen.dart';
@@ -74,6 +75,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: _chatPath,
                 builder: (context, state) => const ChatScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':chatId',
+                    builder: (context, state) {
+                      final chatId = state.pathParameters['chatId'] ?? 'focus';
+                      return ChatDetailScreen(chatId: chatId);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
