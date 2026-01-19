@@ -194,7 +194,7 @@ Backend:
 - [-] Реальное управление контейнерами (docker/k8s) — позже
 
 Mobile:
-- [ ] Экран Work (DEV):
+- [x] Экран Work (DEV):
   - DevBox packages
   - выбор стека
   - старт/стоп/status
