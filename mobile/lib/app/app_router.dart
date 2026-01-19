@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auth/auth_controller.dart';
+import '../features/auth/login_screen.dart';
+import '../features/auth/profile_screen.dart';
 import '../features/chat/chat_screen.dart';
 import '../features/devbox/devbox_screen.dart';
 import '../features/docs/docs_screen.dart';
@@ -14,6 +17,9 @@ import '../features/wallet/wallet_screen.dart';
 import 'app_shell.dart';
 import 'navigation_shell.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
+const _authPath = '/auth';
 const _chatPath = '/chat';
 const _mediaPath = '/media';
 const _docsPath = '/docs';
@@ -23,11 +29,38 @@ const _plansPath = '/plans';
 const _walletPath = '/wallet';
 const _referralsPath = '/referrals';
 const _supportPath = '/support';
+const _profilePath = '/profile';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
+  final authState = ref.watch(authControllerProvider);
+
   return GoRouter(
-    initialLocation: _chatPath,
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: _authPath,
+    refreshListenable: GoRouterRefreshStream(
+      ref.watch(authControllerProvider.notifier).stream,
+    ),
+    redirect: (context, state) {
+      final isAuthRoute = state.matchedLocation == _authPath;
+      if (authState.status == AuthStatus.unknown) {
+        return null;
+      }
+      if (authState.status == AuthStatus.unauthenticated && !isAuthRoute) {
+        return _authPath;
+      }
+      if (authState.status == AuthStatus.authenticated && isAuthRoute) {
+        return _chatPath;
+      }
+      if (authState.isZeroPlan && state.matchedLocation == _referralsPath) {
+        return _chatPath;
+      }
+      return null;
+    },
     routes: [
+      GoRoute(
+        path: _authPath,
+        builder: (context, state) => const LoginScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return AppShell(
@@ -109,28 +142,71 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: _profilePath,
+        builder: (context, state) => const ProfileScreen(),
+      ),
     ],
   );
 });
 
 const navigationDestinations = [
-  NavigationDestinationData(label: 'Chat', icon: Icons.chat_bubble_outline),
-  NavigationDestinationData(label: 'Media', icon: Icons.graphic_eq_outlined),
-  NavigationDestinationData(label: 'Docs', icon: Icons.folder_open_outlined),
-  NavigationDestinationData(label: 'Sections', icon: Icons.view_quilt_outlined),
-  NavigationDestinationData(label: 'DevBox', icon: Icons.developer_mode_outlined),
-  NavigationDestinationData(label: 'Plans', icon: Icons.workspace_premium_outlined),
-  NavigationDestinationData(label: 'Wallet', icon: Icons.account_balance_wallet_outlined),
-  NavigationDestinationData(label: 'Referrals', icon: Icons.group_outlined),
-  NavigationDestinationData(label: 'Support', icon: Icons.support_agent_outlined),
+  NavigationDestinationData(
+    label: 'Chat',
+    icon: Icons.chat_bubble_outline,
+    branchIndex: 0,
+  ),
+  NavigationDestinationData(
+    label: 'Media',
+    icon: Icons.graphic_eq_outlined,
+    branchIndex: 1,
+  ),
+  NavigationDestinationData(
+    label: 'Docs',
+    icon: Icons.folder_open_outlined,
+    branchIndex: 2,
+  ),
+  NavigationDestinationData(
+    label: 'Sections',
+    icon: Icons.view_quilt_outlined,
+    branchIndex: 3,
+  ),
+  NavigationDestinationData(
+    label: 'DevBox',
+    icon: Icons.developer_mode_outlined,
+    branchIndex: 4,
+  ),
+  NavigationDestinationData(
+    label: 'Plans',
+    icon: Icons.workspace_premium_outlined,
+    branchIndex: 5,
+  ),
+  NavigationDestinationData(
+    label: 'Wallet',
+    icon: Icons.account_balance_wallet_outlined,
+    branchIndex: 6,
+  ),
+  NavigationDestinationData(
+    label: 'Referrals',
+    icon: Icons.group_outlined,
+    branchIndex: 7,
+  ),
+  NavigationDestinationData(
+    label: 'Support',
+    icon: Icons.support_agent_outlined,
+    branchIndex: 8,
+  ),
 ];
 
 class NavigationDestinationData {
   const NavigationDestinationData({
     required this.label,
     required this.icon,
+    required this.branchIndex,
   });
 
   final String label;
   final IconData icon;
+  final int branchIndex;
 }

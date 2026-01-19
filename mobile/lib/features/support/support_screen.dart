@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../theme/app_spacing.dart';
 import '../../ui/components/app_button.dart';
@@ -50,6 +51,12 @@ class SupportScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           for (final topic in supportTopics) SupportTopicCard(topic: topic),
           const SizedBox(height: AppSpacing.lg),
+          AppPrimaryButton(
+            label: 'Profile & linked providers',
+            icon: Icons.manage_accounts_outlined,
+            onPressed: () => context.push('/profile'),
+          ),
+          const SizedBox(height: AppSpacing.md),
           AppPrimaryButton(
             label: 'Open support ticket',
             icon: Icons.chat_bubble_outline,

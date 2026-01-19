@@ -72,3 +72,10 @@ Template:
 - Options considered: (1) Commit binary golden images, (2) skip golden tests and document the gap.
 - Why: The repository cannot accept binary test assets, so golden tests would be impossible to store or review.
 - Consequences: Golden tests must be added later in an environment that supports binary artifacts.
+
+- Date: 2026-01-22
+- Decision: Mobile auth uses the stub OAuth callback with email input and a timestamp-based provider user id, then fetches `/me` after storing tokens; access token refresh is handled in a Dio interceptor using the refresh token from secure storage.
+- Context: Milestone 02 requires onboarding, social login UI wired to backend contracts, secure storage, and refresh flow before real OAuth integrations exist.
+- Options considered: (1) Keep user data from `/auth/oauth/{provider}/callback` only, (2) call `/me` after login to validate the session and keep profile data fresh, (3) implement refresh via explicit calls in UI only.
+- Why: Calling `/me` ensures tokens are validated immediately and keeps profile data in sync, while the interceptor-based refresh keeps the flow centralized and reduces UI coupling.
+- Consequences: Real OAuth flows should replace the stubbed provider user id generation and email input once provider SDKs are integrated.
