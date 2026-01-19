@@ -1,0 +1,19 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    env: str = "dev"
+    app_name: str = "ChatriX API"
+
+    database_url: str
+
+    jwt_secret: str
+    jwt_access_ttl_min: int = 30
+    jwt_refresh_ttl_days: int = 30
+
+    cors_origins: list[str] = ["*"]
+
+
+settings = Settings()  # type: ignore
