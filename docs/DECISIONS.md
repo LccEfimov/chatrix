@@ -23,3 +23,10 @@ Template:
 - Options considered: (1) Dedicated subscriptions table with history, (2) Current plan stored on user for the skeleton.
 - Why: Keeps the milestone lightweight while still enforcing plan-based policy checks in the backend.
 - Consequences: A future milestone must introduce a proper subscription history table and migrate `users.plan_code` if needed.
+
+- Date: 2026-01-19
+- Decision: Implemented wallet ledger/top-up as stubbed payment flow with idempotency keys, and FX rates stored in `fx_rates` with manual upsert helper.
+- Context: Milestone 3 requires ledger-based balance, top-up providers, and daily CBR FX rates, but no scheduler is defined.
+- Options considered: (1) Full payment gateway integrations with background jobs, (2) Stub payment/top-up records with explicit API contracts and idempotent ledger entries.
+- Why: Keeps the milestone testable with clear API contracts while leaving room for provider-specific integrations and scheduled FX updates.
+- Consequences: A future milestone must wire scheduled FX updates and real provider callbacks to move top-ups from pending to succeeded.

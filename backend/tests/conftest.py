@@ -18,7 +18,17 @@ os.environ.setdefault("JWT_SECRET", "test-secret")
 from app.api.deps import get_db  # noqa: E402
 from app.db.base import Base  # noqa: E402
 from app.main import create_app  # noqa: E402
-from app.models import auth_session, oauth_account, plan, plan_entitlement, plan_limit, user  # noqa: F401, E402
+from app.models import (  # noqa: F401, E402
+    auth_session,
+    fx_rate,
+    oauth_account,
+    plan,
+    plan_entitlement,
+    plan_limit,
+    user,
+    wallet_ledger,
+    wallet_topup,
+)
 
 
 @pytest.fixture()
