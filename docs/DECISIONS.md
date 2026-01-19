@@ -86,3 +86,10 @@ Template:
 - Options considered: (1) Hardcode plan access in the client, (2) Define a shared entitlement key catalog in the client and rely on backend config, (3) Treat missing keys as enabled to avoid blocking.
 - Why: Keeps the server as the source of truth and provides a deterministic mapping for UI gating without baking plan logic into the app.
 - Consequences: Backend plan entitlements must be seeded with matching keys to unlock features; missing keys will appear locked in the client.
+
+- Date: 2026-01-23
+- Decision: For the Video MVP UI, treat VIP, DEV, and BUSINESS plans as “top plans” with unlimited demo length; other plans show a 10-second demo limit.
+- Context: Milestone 08 requires 10-second demos for starter plans and unlimited demos for top plans, but the TZ does not specify which plan codes qualify as “top”.
+- Options considered: (1) VIP only, (2) VIP + DEV, (3) VIP + DEV + BUSINESS.
+- Why: BUSINESS is the highest standard subscription tier and typically aligns with unlimited feature access alongside VIP and DEV.
+- Consequences: Plan mapping may need adjustment once product defines explicit plan tiers for unlimited video demos.

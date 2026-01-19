@@ -152,11 +152,11 @@ Backend:
 - [-] Реальная генерация/анимация — позже
 
 Mobile:
-- [ ] Экран Video:
+- [x] Экран Video:
   - список “video chats”
   - создание: title + media + voice + prompt
   - демо 10 сек для стартовых, unlimited для топ‑планов
-- [ ] Экран Video Tools (gated)
+- [x] Экран Video Tools (gated)
 
 ---
 

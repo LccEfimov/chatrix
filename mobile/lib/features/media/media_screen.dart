@@ -68,6 +68,24 @@ class MediaScreen extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.video,
+            lockedTitle: 'Video access locked',
+            lockedSubtitle: 'Upgrade your plan to unlock video sessions.',
+            child: AppCard(
+              onTap: () => context.push('/media/video'),
+              child: const ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: CircleAvatar(
+                  child: Icon(Icons.smart_display_outlined),
+                ),
+                title: Text('Video sessions'),
+                subtitle: Text('Create and manage video avatar chats.'),
+                trailing: Icon(Icons.chevron_right),
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          EntitlementGate(
             entitlementKey: PlanEntitlementKeys.toolsAudio,
             lockedTitle: 'Audio tools locked',
             lockedSubtitle: 'Upgrade your plan to unlock audio tools.',
@@ -80,6 +98,24 @@ class MediaScreen extends StatelessWidget {
                 ),
                 title: Text('Audio tools'),
                 subtitle: Text('Transcribe, clean up, and enhance audio.'),
+                trailing: Icon(Icons.chevron_right),
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          EntitlementGate(
+            entitlementKey: PlanEntitlementKeys.toolsVideo,
+            lockedTitle: 'Video tools locked',
+            lockedSubtitle: 'Upgrade your plan to unlock video tools.',
+            child: AppCard(
+              onTap: () => context.push('/media/video-tools'),
+              child: const ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: CircleAvatar(
+                  child: Icon(Icons.video_settings_outlined),
+                ),
+                title: Text('Video tools'),
+                subtitle: Text('Storyboard, enhance, and polish video.'),
                 trailing: Icon(Icons.chevron_right),
               ),
             ),
