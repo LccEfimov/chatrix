@@ -214,5 +214,5 @@ Mobile:
 ## Milestone 13 — Release readiness
 - [ ] End‑to‑end smoke tests (backend+mobile)
 - [ ] Crash reporting (Sentry) — optional decision
-- [ ] Observability (structured logs, correlation ids)
+- [x] Observability (structured logs, correlation ids)
 - [ ] Android release pipeline (versioning, keystore instructions)
