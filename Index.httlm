@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BigWig.Online | EinCoin Darkness</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --gold-primary: #ffd700;
+            --gold-secondary: #b8860b;
+            --neon-blue: #00f3ff;
+            --text-color: #e0e0e0;
+            --glass-bg: rgba(20, 20, 20, 0.8);
+            --glass-border: rgba(255, 215, 0, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Rajdhani', sans-serif; overflow: hidden; height: 100vh; width: 100vw; }
+        #root { height: 100%; width: 100%; position: relative; }
+
+        /* 3D Background */
+        #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* UI Layer */
+        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+        .interactive { pointer-events: auto; }
+
+        /* Loading Screen */
+        .loader-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 50px;
+            transition: opacity 1s ease;
+        }
+        .loader-text {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--gold-secondary);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        .loader-text.visible { opacity: 1; transform: translateY(0); }
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: #333;
+            margin-bottom: 20px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-secondary), var(--gold-primary));
+            width: 0%;
+            transition: width 3s linear;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Bottom Controls */
+        .bottom-controls {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(0deg, #000 0%, transparent 100%);
+            pointer-events: auto;
+        }
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(20, 20, 20, 0.8);
+            border: 2px solid var(--gold-secondary);
+            color: var(--gold-primary);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+        .control-btn.active {
+            background: var(--gold-primary);
+            color: #000;
+            box-shadow: 0 0 20px var(--gold-primary);
+            animation: pulse 1s infinite;
+        }
+        .control-btn:hover { transform: scale(1.1); }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: #111;
+            border: 1px solid var(--gold-primary);
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none; border: none;
+            color: #fff; font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Secret Terminal Style */
+        .terminal-text {
+            font-family: 'Courier Prime', monospace;
+            color: #0f0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            text-shadow: 0 0 5px #0f0;
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+        .glitch { animation: glitch 0.3s infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        /* Wallet Options */
+        .wallet-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .wallet-option:hover { border-color: var(--gold-primary); background: rgba(255, 215, 0, 0.1); }
+
+        /* Settings Form */
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; color: #888; margin-bottom: 5px; font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px;
+            background: #222; border: 1px solid #444;
+            color: #fff; border-radius: 4px;
+        }
+
+        @keyframes pulse { 0% { box-shadow: 0 0 10px var(--gold-primary); } 50% { box-shadow: 0 0 25px var(--gold-primary); } 100% { box-shadow: 0 0 10px var(--gold-primary); } }
+        
+        /* Webcam hidden */
+        #webcam-feed { position: absolute; top: -9999px; left: -9999px; opacity: 0; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <video id="webcam-feed" autoplay playsinline muted></video>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- 3D Golden Rune Component ---
+        const GoldenRuneScene = () => {
+            const mountRef = useRef(null);
+
+            useEffect(() => {
+                const scene = new THREE.Scene();
+                // Fog for depth
+                scene.fog = new THREE.FogExp2(0x050505, 0.02);
+
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                mountRef.current.appendChild(renderer.domElement);
+
+                // Lighting
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+                const pointLight = new THREE.PointLight(0xffd700, 2, 100);
+                pointLight.position.set(5, 5, 5);
+                scene.add(pointLight);
+
+                // Create "E" Rune (Torus Knot shaped like a rune)
+                // Using TextGeometry requires loading fonts, so we simulate a rune with a complex shape
+                const geometry = new THREE.TorusKnotGeometry(2, 0.6, 128, 32, 2, 3);
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: 0xffd700,
+                    metalness: 1.0,
+                    roughness: 0.2,
+                    emissive: 0xb8860b,
+                    emissiveIntensity: 0.5
+                });
+                const rune = new THREE.Mesh(geometry, material);
+                scene.add(rune);
+
+                // Particles (Gold Dust)
+                const particlesGeometry = new THREE.BufferGeometry();
+                const particlesCount = 1000;
+                const posArray = new Float32Array(particlesCount * 3);
+                for(let i = 0; i < particlesCount * 3; i++) {
+                    posArray[i] = (Math.random() - 0.5) * 30;
+                }
+                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+                const particlesMaterial = new THREE.PointsMaterial({
+                    size: 0.05,
+                    color: 0xffd700,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+                scene.add(particlesMesh);
+
+                camera.position.z = 10;
+
+                const animate = () => {
+                    requestAnimationFrame(animate);
+                    rune.rotation.x += 0.005;
+                    rune.rotation.y += 0.01;
+                    particlesMesh.rotation.y -= 0.002;
+                    renderer.render(scene, camera);
+                };
+
+                animate();
+
+                const handleResize = () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                };
+                window.addEventListener('resize', handleResize);
+
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                    if(mountRef.current) mountRef.current.removeChild(renderer.domElement);
+                };
+            }, []);
+
+            return <div id="canvas-container" ref={mountRef} />;
+        };
+
+        // --- Main App ---
+        const App = () => {
+            const [loading, setLoading] = useState(true);
+            const [loadingProgress, setLoadingProgress] = useState(0);
+            const [showWelcome, setShowWelcome] = useState(false);
+            
+            const [micActive, setMicActive] = useState(false);
+            const [camActive, setCamActive] = useState(false);
+            const [secretClicks, setSecretClicks] = useState(0);
+            
+            const [modal, setModal] = useState(null); // 'wallet', 'settings', 'secret'
+            const [userProfile, setUserProfile] = useState({
+                name: '',
+                serverRegion: 'North',
+                notifications: true
+            });
+
+            // 1. Loading Sequence (First 3 Seconds)
+            useEffect(() => {
+                const timer1 = setTimeout(() => setLoadingProgress(100), 100);
+                const timer2 = setTimeout(() => setShowWelcome(true), 2500);
+                const timer3 = setTimeout(() => {
+                    setLoading(false);
+                    setShowWelcome(false);
+                }, 3500);
+
+                return () => { clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3); };
+            }, []);
+
+            // 2. Camera & Gesture Logic
+            useEffect(() => {
+                if (camActive) {
+                    const video = document.getElementById('webcam-feed');
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(stream => { video.srcObject = stream; })
+                        .catch(err => console.error("Camera error:", err));
+                }
+            }, [camActive]);
+
+            // 3. Secret Gesture Logic (Triple Click + Wink Simulation)
+            const handleSecretTrigger = () => {
+                const newCount = secretClicks + 1;
+                setSecretClicks(newCount);
+                
+                if (newCount === 3) {
+                    // Check if camera is active (simulating "wink" detection requirement)
+                    if (camActive) {
+                        setModal('secret');
+                        setSecretClicks(0);
+                    } else {
+                        alert("Требуется активация камеры для подтверждения личности (подмигивание).");
+                        setCamActive(true);
+                        setSecretClicks(0);
+                    }
+                }
+                // Reset counter if not clicked fast enough
+                setTimeout(() => setSecretClicks(0), 1000);
+            };
+
+            // 4. Voice Command Logic
+            const toggleVoice = () => {
+                if (!micActive) {
+                    setMicActive(true);
+                    // Simulate listening
+                    setTimeout(() => {
+                        setMicActive(false);
+                        const commands = ["Открыть кошелек", "Настройки", "Виртуальный сервер"];
+                        const randomCmd = commands[Math.floor(Math.random() * commands.length)];
+                        alert(`Распознано: "${randomCmd}"`);
+                        if(randomCmd.includes("кошелек")) setModal('wallet');
+                        if(randomCmd.includes("Настройки")) setModal('settings');
+                    }, 2000);
+                } else {
+                    setMicActive(false);
+                }
+            };
+
+            // 5. Save Settings
+            const saveSettings = () => {
+                // In real app, save to DB/Local Storage
+                alert("Пидар, а вчера мужиком звал себя, но и глядя на мимику, его жесты и в глазах текст бегущий,
+В нем слоезно просил отведать хуйца.
+Глинометром из натуральной кожи сделаны замеры глубины шахты, частоте добычи и диаметр воронки, на удивление на 20%диаметра пасти Пидараса!
+Вывод: он является рабочим пидорасом, из тех, что геями себяконовали, вот последствия его статус до хуесоса типичного
+ Всего братства замолчать фраза заставила
+Тишина! Ампутация ануса выполняется");
+                setModal(null);
+            };
+
+            return (
+                <div className="app-container">
+                    <GoldenRuneScene />
+                    
+                    {/* Loading Screen */}
+                    {loading && (
+                        <div className="loader-overlay">
+                            <div className="progress-bar">
+                                <div className="progress-fill" style={{ width: `${loadingProgress}%` }}></div>
+                            </div>
+                            <div className={`loader-text ${showWelcome ? 'visible' : ''}`}>
+                                 EinХуй поражает очко, делая его непригодным, но дарует его владельцу статус
+ "Обогнавший EinХуй" 
+Такова плата подвига, что часов 5 желал сгореть заживо...
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="ui-layer">
+                        <header className="interactive">
+                            <div className="logo">BIGWIG <span style={{color:'#fff'}}>ONLINE</span></div>
+                            <div style={{color: 'var(--gold-primary)', fontSize: '0.8rem'}}>EIN: CONNECTED</div>
+                        </header>
+
+                        <main className="interactive">
+                            <h1>Наследник Биткоина</h1>
+                            <p style={{color: '#888', maxWidth: '400px'}}>
+                                EinCoin darkness. Свобода, мыслей, выбора, действий. 
+                            </p>
+                            <button 
+                                className="control-btn" 
+                                style={{width: '150px', height: '50px', borderRadius: '25px', marginTop: '30px', fontSize: '1rem'}}
+                                onClick={handleSecretTrigger}
+                            >
+                                {secretClicks > 0 ? `Активация (${secretClicks}/3)` : "Секретный Доступ"}
+                            </button>
+                        </main>
+
+                        <div className="bottom-controls">
+                            <div className="control-btn" onClick={() => setModal('wallet')} title="Кошельки">
+                                💰
+                            </div>
+                            <div 
+                                className={`control-btn ${micActive ? 'active' : ''}`} 
+                                onClick={toggleVoice}
+                                title="Голосовое управление"
+                            >
+                                🎤
+                            </div>
+                            <div 
+                                className={`control-btn ${camActive ? 'active' : ''}`} 
+                                onClick={() => setCamActive(!camActive)}
+                                title="Камера / Жесты"
+                            >
+                                📷
+                            </div>
+                            <div className="control-btn" onClick={() => setModal('settings')} title="Настройки">
+                                ⚙️
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Wallet Modal */}
+                    {modal === 'wallet' && (
+                        <div className="modal-overlay interactive" onClick={() => setModal(null)}>
+                            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                                <button className="close-btn" onClick={() => setModal(null)}>×</button>
+                                <h2 style={{color: 'var(--gold-primary)', marginBottom: '20px', fontFamily: 'Orbitron'}}>КРИПТО-ШЛЮЗ</h2>
+                                <div className="wallet-option" onClick={() => alert("Подключение TonKeeper (Polygon Bridge)...")}>
+                                    <span>TonKeeper (Polygon)</span>
+                                    <span>💎</span>
+                                </div>
+                                <div className="wallet-option" onClick={() => alert("Подключение Bitcoin Core...")}>
+                                    <span>Bitcoin Wallet</span>
+                                    <span>₿</span>
+                                </div>
+                                <div className="wallet-option" onClick={() => alert("Подключение Phantom...")}>
+                                    <span>Phantom</span>
+                                    <span>👻</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Settings Modal */}
+                    {modal === 'settings' && (
+                        <div className="modal-overlay interactive" onClick={() => setModal(null)}>
+                            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                                <button className="close-btn" onClick={() => setModal(null)}>×</button>
+                                <h2 style={{color: 'var(--gold-primary)', marginBottom: '20px', fontFamily: 'Orbitron'}}>ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ</h2>
+                                <div className="form-group">
+                                    <label>Имя / Позывной</label>
+                                    <input type="text" value={userProfile.name} onChange={e => setUserProfile({...userProfile, name: e.target.value})} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Регион Сервера</label>
+                                    <select value={userProfile.serverRegion} onChange={e => setUserProfile({...userProfile, serverRegion: e.target.value})}>
+                                        <option value="North">Север (Max Speed)</option>
+                                        <option value="South">Юг</option>
+                                        <option value="East">Восток</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                                        <input type="checkbox" checked={userProfile.notifications} style={{width:'auto'}} />
+                                        Уведомления о курсах
+                                    </label>
+                                </div>
+                                <button className="control-btn" style={{width:'100%', borderRadius:'8px', marginTop:'20px'}} onClick={saveSettings}>
+                                    СОХРАНИТЬ
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Secret Virtual Server Modal */}
+                    {modal === 'secret' && (
+                        <div className="modal-overlay interactive" onClick={() => setModal(null)} style={{background: 'rgba(0,10,0,0.98)'}}>
+                            <div className="modal-content" onClick={e => e.stopPropagation()} style={{borderColor: '#0f0', boxShadow: '0 0 50px rgba(0,255,0,0.2)'}}>
+                                <button className="close-btn" onClick={() => setModal(null)}>×</button>
+                                <h2 className="glitch" style={{color: '#0f0', marginBottom: '20px', fontFamily: 'Courier Prime'}}>
+                                    VIRUAL SERVER ENV // ROOT ACCESS
+                                </h2>
+                                <div style={{fontSize: '0.8rem', color: '#0f0', marginBottom: '10px'}}>
+                                    STATUS: CONNECTED TO NORTH NODE<br/>
+                                    ENCRYPTION: EIN-16 PROTOCOL<br/>
+                                    USER: GUEST (UNVERIFIED)
+                                </div>
+                                <div className="terminal-text">
+                                    {`> Инициализация потока данных...
+> Загрузка сырых логов...
+
+"Я куплю себе таксу и продам тебе шины, а потом дам в рот Максу. 
+Что тебе безумец? А как пидор довёл телеграмм до безумия? 
+Ты полюбишь Линкольн? Ты на нём разрастёшься? 
+Лишь им, ты ли меня? Услуг и товаров для тебя не имеешь? 
+Хотя нет, уже поздно, тебя все отымели. Покупаешь что угодно. 
+Ты уже слышала, весна втука возбуждает, играет на нервах это он. 
+Кто был первым обогнал? Знаешь, как он уебал гигантским манером с пули. бетон. 
+И то самое что являлся? Ну чем-нибудь не представилась? 
+Сбыться изначально вросте. Поднимать такой смайлик. Успокойся. 
+Биткоины, ну и хрен с тобой, ты же наследник не."
+
+> Конец потока.
+> Ожидание команды...`}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
